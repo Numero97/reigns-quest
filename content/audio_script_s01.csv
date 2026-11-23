@@ -1,0 +1,19 @@
+id,scene,text,notes
+s01_d1,s01_house,"Good morning, Reign!",Warm and bright. Pause after the name.
+s01_d2,s01_house,"I'm glad you're awake. Betsy has gone missing!",Worried-but-not-scary on "missing".
+s01_d3,s01_house,"Mom and Lyra are already looking for her.",Calm. Reassuring.
+s01_d4,s01_house,"Can you help me find some clues to where she might have gone?",Real question. Leave a beat after.
+s01_d5,s01_house,"I'm sure she left some paw prints around here somewhere. Can you find five paw prints?",Say 'five' clearly. This is the quantity target.
+s01_prompt_find_prints,s01_house,"Can you find five paw prints?",Short replay line for the ear button and idle prompts.
+s01_hint_1,s01_house,"Hmm... look closely at the floor. I think I see a paw print!",Plays after 2 wrong taps or long idle. The engine pulses the target.
+s01_hint_2,s01_house,"There it is! Tap the paw print that's sparkling.",Plays after 4 wrong taps. The engine completes the step for her.
+s01_all_found,s01_house,"Five paw prints! Where do they lead? Look... the window!",Excited. This is the cue to highlight the window.
+s01_window_prompt,s01_house,"Tap the window to take a look outside.",Replay line for the ear button.
+s01_success,s01_house,"Betsy went outside! Let's follow her into the woods!",Transition line. Ends the scene.
+number_1,global,"One!",Reused in every scene. Record each number once.
+number_2,global,"Two!",
+number_3,global,"Three!",
+number_4,global,"Four!",
+number_5,global,"Five!",
+sfx_try_again,global,,"Not a voice line. Soft 'try again' tone, no buzzer."
+sfx_success,global,,"Not a voice line. Short happy sparkle."

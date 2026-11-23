@@ -1,0 +1,38 @@
+{
+  "id": "s01_house",
+  "title": "Betsy is missing",
+  "background": "bg_cabin_morning",
+  "interaction_style": "point_and_click",
+  "start_state": "reign_in_bed",
+  "mechanic": "follow_trail",
+  "params": {
+    "count": 5,
+    "reveal": "sequential",
+    "show_numeral_on_tap": true,
+    "speak_count_on_tap": true,
+    "prints": [
+      { "id": "p1", "sprite": "spr_pawprint", "x": 230, "y": 640 },
+      { "id": "p2", "sprite": "spr_pawprint", "x": 400, "y": 655 },
+      { "id": "p3", "sprite": "spr_pawprint", "x": 560, "y": 620 },
+      { "id": "p4", "sprite": "spr_pawprint", "x": 700, "y": 660 },
+      { "id": "p5", "sprite": "spr_pawprint", "x": 850, "y": 600 }
+    ],
+    "final_target": { "id": "window", "x": 925, "y": 212, "highlight_sprite": "spr_window_glow", "on_tap": "zoom_to_window_then_next" },
+    "print_glow": true
+  },
+  "dialog": [
+    { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d1", "text": "Good morning, Reign!" },
+    { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d2", "text": "I'm glad you're awake. Betsy has gone missing!" },
+    { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d3", "text": "Mom and Lyra are already looking for her." },
+    { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d4", "text": "Can you help me find some clues to where she might have gone?" },
+    { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d5", "text": "I'm sure she left some paw prints around here somewhere. Can you find five paw prints?" }
+  ],
+  "dialog_advance": "auto_after_audio",
+  "prompt_audio": "s01_prompt_find_prints",
+  "hint_audio": ["s01_hint_1", "s01_hint_2"],
+  "all_found_audio": "s01_all_found",
+  "window_prompt_audio": "s01_window_prompt",
+  "success_audio": "s01_success",
+  "success_dialog": { "speaker": "dad", "portrait": "dad_face", "text": "Betsy went outside! Let's follow her into the woods!" },
+  "next": "s02_snakes"
+}

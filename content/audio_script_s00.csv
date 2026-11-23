@@ -1,0 +1,4 @@
+id,scene,text,notes
+s00_intro,s00_placeholder,"Welcome to the test scene!",Placeholder only. No need to record.
+s00_prompt,s00_placeholder,"Tap the big star.",Placeholder only. No need to record.
+s00_success,s00_placeholder,"Great job! The engine works.",Placeholder only. No need to record.

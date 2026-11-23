@@ -1,0 +1,11 @@
+{
+  "id": "s00_placeholder",
+  "title": "Test scene (milestone 1)",
+  "background": "bg_placeholder",
+  "intro_audio": "s00_intro",
+  "mechanic": "placeholder",
+  "params": { "prompt_audio": "s00_prompt" },
+  "objects": [],
+  "success_audio": "s00_success",
+  "next": null
+}
