@@ -17,7 +17,7 @@ export const followTrail: Mechanic = {
   audio: d => Array.from({ length: d.params?.prints?.length ?? 0 }, (_, i) => `number_${i + 1}`),
 
   start({ scene, data, params, ready, complete }) {
-    const prints: { id: string; sprite: string; x: number; y: number }[] = params.prints ?? [];
+    const prints: { id: string; sprite: string; x: number; y: number; scale?: number }[] = params.prints ?? [];
     const sequential = (params.reveal ?? 'sequential') === 'sequential';
     const final = params.final_target as { x: number; y: number; highlight_sprite?: string; on_tap?: string } | undefined;
     const hintAudio: string[] = data.hint_audio ?? [];
@@ -29,7 +29,13 @@ export const followTrail: Mechanic = {
     // ---- build the prints (hidden until revealed) ----
     prints.forEach((p, i) => {
       const img = makeImage(scene, p.sprite, 0, 0, 120, 120);
-      if (img instanceof Phaser.GameObjects.Image) img.setDisplaySize(img.width * 96 / img.height, 96);
+      if (img instanceof Phaser.GameObjects.Image) {
+        const h = 96 * (p.scale ?? 1);                 // "scale" in the scene file: smaller = farther away
+        img.setDisplaySize(img.width * h / img.height, h);
+      }
+      // point each print toward the next one (the last points at the window)
+      const to = prints[i + 1] ?? params.final_target;
+      if (params.face_next !== false && to) img.setAngle(Phaser.Math.RadToDeg(Math.atan2(to.y - p.y, to.x - p.x)) + 90);
       const numeral = scene.add.text(0, 0, String(i + 1), {
         fontSize: '64px', fontStyle: 'bold', color: '#ffffff', stroke: '#5a3418', strokeThickness: 10
       }).setOrigin(0.5).setVisible(false);

@@ -43,7 +43,15 @@ export class Stage extends Phaser.Scene {
     const d = this.data_;
     this.loadingPaw?.destroy();
     makeBackground(this, d.background);
-    for (const o of d.objects ?? []) makeImage(this, o.sprite, o.x, o.y);
+    // objects: { sprite, x, y, height?, anchor? }  height = size on screen; anchor "bottom" = x,y is where the feet touch
+    for (const o of d.objects ?? []) {
+      const img = makeImage(this, o.sprite, o.x, o.y);
+      if (img instanceof Phaser.GameObjects.Image) {
+        if (o.height) img.setDisplaySize(img.width * o.height / img.height, o.height);
+        if (o.anchor === 'bottom') img.setOrigin(0.5, 1);
+      }
+      img.setDepth(o.depth ?? 2);
+    }
 
     this.cameras.main.fadeIn(600);
     const mechanic = mechanics[d.mechanic] ?? fallback;
