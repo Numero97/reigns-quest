@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { registerSW } from 'virtual:pwa-register';
 import { engine, W, H } from './engine/engine';
 import { Title } from './scenes/Title';
 import { Stage } from './scenes/Stage';
@@ -24,3 +25,6 @@ const game = new Phaser.Game({
 engine.game = game;
 game.events.once('ready', () => { game.sound.mute = save.muted; game.scene.start('Overlay'); });
 (window as any).__game = game;
+
+// Check for a new version of the game each time it opens, and reload by itself when one arrives.
+registerSW({ immediate: true });

@@ -27,6 +27,7 @@ export default defineConfig({
     assetList(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: false,
       includeAssets: ['icons/*.png'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,png,jpg,webp,m4a,json,webmanifest}'],
