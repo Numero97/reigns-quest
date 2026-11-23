@@ -29,10 +29,12 @@ export class Overlay extends Phaser.Scene {
     const g = this.add.graphics();
     g.fillStyle(0x000000, 0.18).fillCircle(0, 6, 62);
     g.fillStyle(0xffd54a, 1).fillCircle(0, 0, 62).lineStyle(6, 0xe0a800).strokeCircle(0, 0, 62);
-    g.lineStyle(9, 0x7a4a24);
-    g.beginPath().arc(0, -4, 28, Phaser.Math.DegToRad(150), Phaser.Math.DegToRad(390), false).strokePath();   // outer ear
-    g.beginPath().arc(2, -2, 14, Phaser.Math.DegToRad(160), Phaser.Math.DegToRad(380), false).strokePath();   // inner curl
-    g.beginPath().moveTo(-24, 6).lineTo(-18, 30).strokePath();
+    // a side-view ear: pink outer shape, inner curl, little lobe
+    g.fillStyle(0xf4b896, 1).fillEllipse(2, -2, 60, 84).lineStyle(6, 0x7a4a24).strokeEllipse(2, -2, 60, 84);
+    g.lineStyle(6, 0x7a4a24);
+    g.beginPath().arc(2, -14, 17, Phaser.Math.DegToRad(180), Phaser.Math.DegToRad(360), false).strokePath();   // rim
+    g.beginPath().arc(4, 6, 12, Phaser.Math.DegToRad(270), Phaser.Math.DegToRad(540), false).strokePath();    // inner curl
+    g.fillStyle(0xe58f6b, 1).fillCircle(-4, 40, 10).lineStyle(4, 0x7a4a24).strokeCircle(-4, 40, 10);          // lobe
     this.ear = this.add.container(1024 - 90, 768 - 90, [g]).setSize(124, 124).setDepth(100);
     this.ear.setInteractive({ useHandCursor: true });
     this.ear.on('pointerdown', () => {
