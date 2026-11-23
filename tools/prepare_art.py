@@ -37,6 +37,9 @@ FACES = {  # source file -> game id
     "face_dad_closed.png": "dad_face_closed",
     "face_dad_middle.png": "dad_face_middle",
     "face_dad_open.png": "dad_face_open",
+    "face_dad_worried_closed.png": "dad_face_worried_closed",
+    "face_dad_worried_middle.png": "dad_face_worried_middle",
+    "face_dad_worried_open.png": "dad_face_worried_open",
 }
 
 
