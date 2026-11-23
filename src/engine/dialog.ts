@@ -4,10 +4,10 @@ import Phaser from 'phaser';
 import { engine } from './engine';
 import { makeImage } from './ui';
 
-export interface DialogLine { speaker?: string; portrait?: string; audio?: string; text: string }
+export interface DialogLine { speaker?: string; portrait?: string; audio?: string; text: string; swap?: Record<string, string> }
 
 /** Plays the lines one after another, then removes the box. */
-export async function runDialog(scene: Phaser.Scene, lines: DialogLine[]) {
+export async function runDialog(scene: Phaser.Scene, lines: DialogLine[], onLine?: (line: DialogLine) => void) {
   if (!lines.length) return;
   const boxY = 566, boxH = 186;
   const root = scene.add.container(0, 0).setDepth(80);
@@ -51,6 +51,7 @@ export async function runDialog(scene: Phaser.Scene, lines: DialogLine[]) {
     const cycle: ('closed' | 'middle' | 'open')[] = ['closed', 'middle', 'open', 'middle'];
 
     text.setText(line.text);
+    onLine?.(line);
     let step = 0;
     const mouth = scene.time.addEvent({ delay: 110, loop: true, callback: () => { step = (step + 1) % cycle.length; setMouth(cycle[step]); } });
 

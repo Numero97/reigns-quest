@@ -22,6 +22,7 @@ BACKGROUNDS = {  # source file -> game id
 SPRITES = {  # source file -> (game id, final height in pixels)
     "paw_print.png": ("spr_pawprint", 160),
     "sprite_reign.png": ("spr_reign", 480),
+    "sprite_reign_surprised.png": ("spr_reign_surprised", 480),
     "sprite_dad.png": ("spr_dad", 480),
     "sprite_betsy.png": ("spr_betsy", 360),
 }
@@ -30,6 +31,8 @@ SPRITES = {  # source file -> (game id, final height in pixels)
 GLOW_FILES = ["family_cabine_glow_{n}.png", "family_cabin_glow_{n}.png"]   # either spelling works
 GLOW_REGION = (735, 40, 1024, 330)   # left, top, right, bottom on the 1024x768 picture
 GLOW_FEATHER = 40
+# Poses that must be drawn at the same size as another picture (so swapping them doesn't make her grow or shrink)
+SAME_SIZE_AS = {"sprite_reign_surprised.png": "sprite_reign.png"}
 FACES = {  # source file -> game id
     "face_dad_closed.png": "dad_face_closed",
     "face_dad_middle.png": "dad_face_middle",
@@ -70,7 +73,14 @@ def main():
             continue
         img = remove_flat_background(Image.open(p))
         img = img.crop(img.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox())
-        w = round(img.width * height / img.height)
+        ref = SAME_SIZE_AS.get(src)
+        if ref and (SRC / ref).exists():   # use the other picture's shrink amount
+            r = remove_flat_background(Image.open(SRC / ref))
+            ref_h = r.crop(r.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox()).height
+            k = SPRITES[ref][1] / ref_h
+            w, height = round(img.width * k), round(img.height * k)
+        else:
+            w = round(img.width * height / img.height)
         img.resize((w, height), Image.LANCZOS).save(OUT / "sprites" / f"{name}.png", optimize=True)
         print("sprite:", name)
 

@@ -147,7 +147,7 @@ export const followTrail: Mechanic = {
           engine.setPrompt(data.window_prompt_audio ?? null);
           showWindow();                                   // the window starts to glow...
           const line = data.all_found_dialog;             // ...and Dad says what's next
-          if (line) await runDialog(scene, [{ ...line, audio: line.audio ?? data.all_found_audio }]);
+          if (line) await runDialog(scene, [{ ...line, audio: line.audio ?? data.all_found_audio }], (scene as any).applySwap);
           else await engine.play(data.all_found_audio);
           engine.lockInput(false);
         } else { await engine.play(data.all_found_audio); phase = 'done'; complete(); }

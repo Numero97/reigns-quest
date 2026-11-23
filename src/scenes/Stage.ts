@@ -12,6 +12,7 @@ export class Stage extends Phaser.Scene {
   private data_!: SceneData;
   private loadingPaw?: Phaser.GameObjects.Container;
   private idle?: IdleReplay;
+  private placed = new Map<string, Phaser.GameObjects.Image>();   // picture id -> what is on screen
 
   constructor() { super('Stage'); }
 
@@ -19,6 +20,16 @@ export class Stage extends Phaser.Scene {
     this.data_ = scenes[args.sceneId];
     engine.lockInput(true);
   }
+
+  /** A dialog line can say "swap": { "spr_reign": "spr_reign_surprised" } to change a picture on screen. */
+  applySwap = (line: DialogLine) => {
+    for (const [from, to] of Object.entries(line.swap ?? {})) {
+      const img = this.placed.get(from);
+      if (!img || !this.textures.exists(to)) continue;
+      const k = img.displayHeight / img.height;   // keep the same on-screen size
+      img.setTexture(to).setDisplaySize(img.width * k, img.height * k);
+    }
+  };
 
   private dialogLines(): DialogLine[] { return (this.data_.dialog as DialogLine[] | undefined) ?? []; }
 
@@ -32,7 +43,9 @@ export class Stage extends Phaser.Scene {
     const mechanic = mechanics[d.mechanic] ?? fallback;
     const portraits = [...this.dialogLines(), d.success_dialog, d.all_found_dialog].filter(Boolean)
       .flatMap((l: DialogLine) => (l.portrait ? [`${l.portrait}_closed`, `${l.portrait}_middle`, `${l.portrait}_open`] : []));
-    const sprites = new Set<string>([...(mechanic.assets?.(d) ?? []), ...(d.objects ?? []).map(o => o.sprite), ...portraits]);
+    const swapTargets = [...this.dialogLines(), d.success_dialog, d.all_found_dialog].filter(Boolean)
+      .flatMap((l: DialogLine) => Object.values(l.swap ?? {}));
+    const sprites = new Set<string>([...(mechanic.assets?.(d) ?? []), ...(d.objects ?? []).map(o => o.sprite), ...portraits, ...swapTargets]);
     const audio = new Set<string>([...collectAudioIds(d), ...(mechanic.audio?.(d) ?? [])]);
     if (d.background && have.backgrounds.includes(d.background) && !this.textures.exists(d.background)) this.load.image(d.background, `backgrounds/${d.background}.png`);
     sprites.forEach(s => { if (have.sprites.includes(s) && !this.textures.exists(s)) this.load.image(s, `sprites/${s}.png`); });
@@ -51,6 +64,7 @@ export class Stage extends Phaser.Scene {
         if (o.anchor === 'bottom') img.setOrigin(0.5, 1);
       }
       img.setDepth(o.depth ?? 2);
+      if (img instanceof Phaser.GameObjects.Image) this.placed.set(o.sprite, img);
     }
 
     this.cameras.main.fadeIn(600);
@@ -65,7 +79,7 @@ export class Stage extends Phaser.Scene {
 
     // 1. narration (dialog, or just the intro line)  2. then input turns on  3. quiet-time prompt replays begin
     this.time.delayedCall(650, async () => {
-      if (this.dialogLines().length) await runDialog(this, this.dialogLines());
+      if (this.dialogLines().length) await runDialog(this, this.dialogLines(), this.applySwap);
       else {
         await engine.play(d.intro_audio);
         engine.replayPrompt();
@@ -88,7 +102,7 @@ export class Stage extends Phaser.Scene {
       cam.fadeIn(350);
     }
     const sd = d.success_dialog as DialogLine | undefined;
-    if (sd) await runDialog(this, [{ ...sd, audio: sd.audio ?? d.success_audio }]);
+    if (sd) await runDialog(this, [{ ...sd, audio: sd.audio ?? d.success_audio }], this.applySwap);
     else await engine.play(d.success_audio);
     this.cameras.main.fadeOut(600);
     this.time.delayedCall(650, () => engine.finishScene(d.id));
