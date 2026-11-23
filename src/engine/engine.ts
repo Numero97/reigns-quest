@@ -42,6 +42,8 @@ class Engine {
     });
   }
 
+  hasAudio(id: string) { return this.game.cache.audio.exists(id); }
+
   /** A short sound effect that is not a voice line (nothing plays until real files exist). */
   sfx(id: string) { if (this.game.cache.audio.exists(id)) this.game.sound.play(id); }
 
