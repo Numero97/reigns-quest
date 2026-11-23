@@ -34,6 +34,7 @@
   "prompt_audio": "s01_prompt_find_prints",
   "hint_audio": ["s01_hint_1", "s01_hint_2"],
   "all_found_audio": "s01_all_found",
+  "all_found_dialog": { "speaker": "dad", "portrait": "dad_face", "audio": "s01_all_found", "text": "You found all 5 paw prints! Where do you think they're leading us?" },
   "window_prompt_audio": "s01_window_prompt",
   "success_audio": "s01_success",
   "success_dialog": { "speaker": "dad", "portrait": "dad_face", "text": "Betsy went outside! Let's follow her into the woods!" },

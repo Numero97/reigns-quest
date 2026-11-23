@@ -7,7 +7,7 @@ s01_d5,s01_house,"I'm sure she left some paw prints around here somewhere. Can y
 s01_prompt_find_prints,s01_house,"Can you find five paw prints?",Short replay line for the ear button and idle prompts.
 s01_hint_1,s01_house,"Hmm... look closely at the floor. I think I see a paw print!",Plays after 2 wrong taps or long idle. The engine pulses the target.
 s01_hint_2,s01_house,"There it is! Tap the paw print that's sparkling.",Plays after 4 wrong taps. The engine completes the step for her.
-s01_all_found,s01_house,"Five paw prints! Where do they lead? Look... the window!",Excited. This is the cue to highlight the window.
+s01_all_found,s01_house,"You found all 5 paw prints! Where do you think they're leading us?",Excited. Plays as the window starts to glow. Leave a beat after the question.
 s01_window_prompt,s01_house,"Tap the window to take a look outside.",Replay line for the ear button.
 s01_success,s01_house,"Betsy went outside! Let's follow her into the woods!",Transition line. Ends the scene.
 number_1,global,"One!",Reused in every scene. Record each number once.

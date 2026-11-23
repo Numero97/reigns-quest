@@ -32,6 +32,7 @@ GLOW_REGION = (735, 40, 1024, 330)   # left, top, right, bottom on the 1024x768 
 GLOW_FEATHER = 40
 FACES = {  # source file -> game id
     "face_dad_closed.png": "dad_face_closed",
+    "face_dad_middle.png": "dad_face_middle",
     "face_dad_open.png": "dad_face_open",
 }
 

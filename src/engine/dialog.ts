@@ -41,22 +41,24 @@ export async function runDialog(scene: Phaser.Scene, lines: DialogLine[]) {
         root.add(portrait);
       }
     }
-    const setMouth = (open: boolean) => {
+    // mouth frames: closed > middle > open > middle (the middle picture is optional and just smooths it out)
+    const setMouth = (frame: 'closed' | 'middle' | 'open') => {
       const c = portrait as Phaser.GameObjects.Container | undefined;
       const img = c?.list[1];
-      const k = `${key}_${open ? 'open' : 'closed'}`;
+      const k = `${key}_${frame}`;
       if (img instanceof Phaser.GameObjects.Image && scene.textures.exists(k)) img.setTexture(k).setDisplaySize(160, 160);
     };
+    const cycle: ('closed' | 'middle' | 'open')[] = ['closed', 'middle', 'open', 'middle'];
 
     text.setText(line.text);
-    let flip = false;
-    const mouth = scene.time.addEvent({ delay: 140, loop: true, callback: () => { flip = !flip; setMouth(flip); } });
+    let step = 0;
+    const mouth = scene.time.addEvent({ delay: 110, loop: true, callback: () => { step = (step + 1) % cycle.length; setMouth(cycle[step]); } });
 
     if (line.audio && engine.hasAudio(line.audio)) await engine.play(line.audio);
     else await new Promise<void>(r => setTimeout(r, Math.max(1500, line.text.length * 65))); // not recorded yet: leave time to read it
 
     mouth.remove();
-    setMouth(false);
+    setMouth('closed');
     await new Promise<void>(r => setTimeout(r, 350));
   }
 

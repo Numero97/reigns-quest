@@ -30,8 +30,8 @@ export class Stage extends Phaser.Scene {
     this.load.setPath('assets');
     // Only load files that really exist; anything else becomes a placeholder / silent line.
     const mechanic = mechanics[d.mechanic] ?? fallback;
-    const portraits = [...this.dialogLines(), d.success_dialog].filter(Boolean)
-      .flatMap((l: DialogLine) => (l.portrait ? [`${l.portrait}_closed`, `${l.portrait}_open`] : []));
+    const portraits = [...this.dialogLines(), d.success_dialog, d.all_found_dialog].filter(Boolean)
+      .flatMap((l: DialogLine) => (l.portrait ? [`${l.portrait}_closed`, `${l.portrait}_middle`, `${l.portrait}_open`] : []));
     const sprites = new Set<string>([...(mechanic.assets?.(d) ?? []), ...(d.objects ?? []).map(o => o.sprite), ...portraits]);
     const audio = new Set<string>([...collectAudioIds(d), ...(mechanic.audio?.(d) ?? [])]);
     if (d.background && have.backgrounds.includes(d.background) && !this.textures.exists(d.background)) this.load.image(d.background, `backgrounds/${d.background}.png`);

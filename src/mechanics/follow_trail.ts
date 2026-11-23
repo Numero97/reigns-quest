@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import type { Mechanic } from './index';
 import { engine } from '../engine/engine';
 import { makeImage, sparkle } from '../engine/ui';
+import { runDialog } from '../engine/dialog';
 import { HintLadder, softRipple } from '../engine/hints';
 
 /**
@@ -142,12 +143,14 @@ export const followTrail: Mechanic = {
       } else {
         phase = 'final';
         engine.lockInput(true);
-        await engine.play(data.all_found_audio);
         if (final) {
           engine.setPrompt(data.window_prompt_audio ?? null);
-          showWindow();
+          showWindow();                                   // the window starts to glow...
+          const line = data.all_found_dialog;             // ...and Dad says what's next
+          if (line) await runDialog(scene, [{ ...line, audio: line.audio ?? data.all_found_audio }]);
+          else await engine.play(data.all_found_audio);
           engine.lockInput(false);
-        } else { phase = 'done'; complete(); }
+        } else { await engine.play(data.all_found_audio); phase = 'done'; complete(); }
       }
     };
 
