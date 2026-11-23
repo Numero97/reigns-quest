@@ -11,7 +11,8 @@ import { HintLadder, softRipple } from '../engine/hints';
 export const followTrail: Mechanic = {
   assets: d => [
     ...(d.params?.prints ?? []).map((p: any) => p.sprite),
-    d.params?.final_target?.highlight_sprite
+    d.params?.final_target?.highlight_sprite,
+    ...(d.params?.final_target?.glow_frames ?? [])
   ].filter(Boolean),
 
   audio: d => Array.from({ length: d.params?.prints?.length ?? 0 }, (_, i) => `number_${i + 1}`),
@@ -19,7 +20,7 @@ export const followTrail: Mechanic = {
   start({ scene, data, params, ready, complete }) {
     const prints: { id: string; sprite: string; x: number; y: number; scale?: number }[] = params.prints ?? [];
     const sequential = (params.reveal ?? 'sequential') === 'sequential';
-    const final = params.final_target as { x: number; y: number; highlight_sprite?: string; on_tap?: string } | undefined;
+    const final = params.final_target as { x: number; y: number; highlight_sprite?: string; glow_frames?: string[]; glow_x?: number; glow_y?: number; on_tap?: string } | undefined;
     const hintAudio: string[] = data.hint_audio ?? [];
     const items: { go: Phaser.GameObjects.Container; found: boolean }[] = [];
     let next = 0;               // index of the print she should tap now
@@ -61,18 +62,36 @@ export const followTrail: Mechanic = {
     const showWindow = () => {
       if (!final) return;
       const w = 200, h = 300;
-      let glow: Phaser.GameObjects.Graphics | Phaser.GameObjects.Image;
-      if (final.highlight_sprite && scene.textures.exists(final.highlight_sprite)) {
+      let glow: Phaser.GameObjects.Graphics | Phaser.GameObjects.Image | Phaser.GameObjects.Container;
+      const frames = (final.glow_frames ?? []).filter(k => scene.textures.exists(k));
+      if (frames.length) {
+        // animated glow: the pictures fade into each other in a loop
+        const imgs = frames.map(k => scene.add.image(0, 0, k));
+        glow = scene.add.container(final.glow_x ?? final.x, final.glow_y ?? final.y, imgs);
+        const n = imgs.length;
+        scene.tweens.addCounter({
+          from: 0, to: n, duration: 900 * n, repeat: -1,
+          onUpdate: tw => {
+            const v = tw.getValue() ?? 0;
+            imgs.forEach((im, i) => { const d = Math.abs(v - i); im.setAlpha(Math.max(0, 1 - Math.min(d, n - d))); });
+          }
+        });
+        glow.setDepth(5).setAlpha(0);
+        scene.tweens.add({ targets: glow, alpha: 1, duration: 600 });
+        windowGlow = glow;
+      } else if (final.highlight_sprite && scene.textures.exists(final.highlight_sprite)) {
         glow = scene.add.image(final.x, final.y, final.highlight_sprite);
       } else {
         glow = scene.add.graphics();
         glow.fillStyle(0xfff0a0, 0.45).fillRoundedRect(final.x - w / 2, final.y - h / 2, w, h, 24);
         glow.lineStyle(8, 0xffe066, 0.95).strokeRoundedRect(final.x - w / 2, final.y - h / 2, w, h, 24);
       }
-      glow.setDepth(5).setAlpha(0);
-      scene.tweens.add({ targets: glow, alpha: 1, duration: 500 });
-      scene.tweens.add({ targets: glow, alpha: 0.45, duration: 700, yoyo: true, repeat: -1, delay: 500 });
-      windowGlow = glow;
+      if (!frames.length) {
+        glow.setDepth(5).setAlpha(0);
+        scene.tweens.add({ targets: glow, alpha: 1, duration: 500 });
+        scene.tweens.add({ targets: glow, alpha: 0.45, duration: 700, yoyo: true, repeat: -1, delay: 500 });
+        windowGlow = glow;
+      }
       const zone = scene.add.zone(final.x, final.y, w, h).setInteractive({ useHandCursor: true }).setDepth(30);
       zone.on('pointerdown', () => tapWindow(zone));
       ladder.reset();

@@ -25,6 +25,11 @@ SPRITES = {  # source file -> (game id, final height in pixels)
     "sprite_dad.png": ("spr_dad", 480),
     "sprite_betsy.png": ("spr_betsy", 360),
 }
+# Window glow frames: full-room pictures with the window glowing. Only the window area is cut out
+# (with soft edges) so it can be laid over the normal background and animated.
+GLOW_FILES = ["family_cabine_glow_{n}.png", "family_cabin_glow_{n}.png"]   # either spelling works
+GLOW_REGION = (735, 40, 1024, 330)   # left, top, right, bottom on the 1024x768 picture
+GLOW_FEATHER = 40
 FACES = {  # source file -> game id
     "face_dad_closed.png": "dad_face_closed",
     "face_dad_open.png": "dad_face_open",
@@ -67,6 +72,22 @@ def main():
         w = round(img.width * height / img.height)
         img.resize((w, height), Image.LANCZOS).save(OUT / "sprites" / f"{name}.png", optimize=True)
         print("sprite:", name)
+
+    for n in (1, 2, 3):
+        p = next((SRC / f.format(n=n) for f in GLOW_FILES if (SRC / f.format(n=n)).exists()), None)
+        if not p:
+            continue
+        full = Image.open(p).convert("RGB").resize((1024, 768), Image.LANCZOS)
+        l, t, r, b = GLOW_REGION
+        patch = full.crop(GLOW_REGION).convert("RGBA")
+        w, h = patch.size
+        yy, xx = np.mgrid[0:h, 0:w]
+        # fade to see-through toward the left, top and bottom edges (the right edge is the screen edge)
+        edge = np.minimum.reduce([xx, yy, h - 1 - yy]).astype(float)
+        a = np.clip(edge / GLOW_FEATHER, 0, 1)
+        patch.putalpha(Image.fromarray((a * 255).astype(np.uint8)))
+        patch.save(OUT / "sprites" / f"spr_window_glow_{n}.png", optimize=True)
+        print("window glow frame:", n, "centre", ((l + r) / 2, (t + b) / 2))
 
     for src, name in FACES.items():
         p = SRC / src

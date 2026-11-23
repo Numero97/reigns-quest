@@ -14,13 +14,13 @@
     "show_numeral_on_tap": true,
     "speak_count_on_tap": true,
     "prints": [
-      { "id": "p1", "sprite": "spr_pawprint", "x": 260, "y": 650, "scale": 1.0 },
-      { "id": "p2", "sprite": "spr_pawprint", "x": 420, "y": 600, "scale": 0.92 },
-      { "id": "p3", "sprite": "spr_pawprint", "x": 590, "y": 540, "scale": 0.84 },
-      { "id": "p4", "sprite": "spr_pawprint", "x": 740, "y": 470, "scale": 0.76 },
+      { "id": "p1", "sprite": "spr_pawprint", "x": 420, "y": 650, "scale": 1.0 },
+      { "id": "p2", "sprite": "spr_pawprint", "x": 260, "y": 600, "scale": 0.92 },
+      { "id": "p3", "sprite": "spr_pawprint", "x": 740, "y": 540, "scale": 0.84 },
+      { "id": "p4", "sprite": "spr_pawprint", "x": 590, "y": 470, "scale": 0.76 },
       { "id": "p5", "sprite": "spr_pawprint", "x": 880, "y": 390, "scale": 0.68 }
     ],
-    "final_target": { "id": "window", "x": 925, "y": 212, "highlight_sprite": "spr_window_glow", "on_tap": "zoom_to_window_then_next" },
+    "final_target": { "id": "window", "x": 925, "y": 212, "glow_frames": ["spr_window_glow_1", "spr_window_glow_2", "spr_window_glow_3"], "glow_x": 880, "glow_y": 185, "on_tap": "zoom_to_window_then_next" },
     "print_glow": true
   },
   "dialog": [
