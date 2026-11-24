@@ -63,7 +63,7 @@ export const letterHunt: Mechanic = {
         parts.push(scene.add.circle(sp.letter_dx ?? 0, (sp.letter_dy ?? 0) + 2, 50, 0xfff3c9, 0.88).setStrokeStyle(5, 0x3d220f));
       }
       const text = scene.add.text(sp.letter_dx ?? 0, (sp.letter_dy ?? 0) + 2, letters[i], {
-        fontSize: '84px', fontStyle: 'bold', fontFamily: 'Trebuchet MS, Verdana, sans-serif',
+        fontSize: '84px', fontStyle: 'bold', fontFamily: 'Andika, sans-serif',
         color: params.letter_badge ? '#3d220f' : '#fff3c9', stroke: '#3d220f', strokeThickness: params.letter_badge ? 0 : 14
       }).setOrigin(0.5);
       parts.push(text);

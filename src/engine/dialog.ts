@@ -17,7 +17,7 @@ export async function runDialog(scene: Phaser.Scene, lines: DialogLine[], onLine
   panel.lineStyle(6, 0xffffff, 1).strokeRoundedRect(20, boxY, 850, boxH, 22);
   panel.lineStyle(2, 0x8fa8ff, 1).strokeRoundedRect(30, boxY + 10, 830, boxH - 20, 16);
   const text = scene.add.text(236, boxY + 26, '', {
-    fontSize: '34px', color: '#ffffff', fontFamily: 'Trebuchet MS, Verdana, sans-serif',
+    fontSize: '34px', color: '#ffffff', fontFamily: 'Andika, sans-serif',
     wordWrap: { width: 600 }, lineSpacing: 8
   });
   root.add([panel, text]);
