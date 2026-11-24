@@ -35,31 +35,36 @@
     "items": [
       {
         "sprite": "spr_snake_trunk",
-        "x": 215,
-        "y": 330
+        "x": 304,
+        "y": 330,
+        "scale": 0.6
       },
       {
         "sprite": "spr_snake_branch",
-        "x": 330,
-        "y": 120,
-        "letter_dx": 20
+        "x": 200,
+        "y": 160,
+        "letter_dx": 20,
+        "scale": 0.7
       },
       {
         "sprite": "spr_snake_trunk",
-        "x": 480,
-        "y": 330,
-        "flip": true
+        "x": 905,
+        "y": 320,
+        "flip": true,
+        "scale": 0.42
       },
       {
         "sprite": "spr_snake_ground",
         "x": 360,
-        "y": 610
+        "y": 580,
+        "scale": 0.8
       },
       {
         "sprite": "spr_snake_ground",
         "x": 770,
         "y": 690,
-        "flip": true
+        "flip": true,
+        "scale": 1
       }
     ],
     "exit": {

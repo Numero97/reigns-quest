@@ -3,3 +3,4 @@ dist
 dev-dist
 audio_raw/*
 !audio_raw/.gitkeep
+_tmp/

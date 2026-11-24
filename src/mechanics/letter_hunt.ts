@@ -25,7 +25,7 @@ export const letterHunt: Mechanic = {
   ].filter(Boolean),
 
   start({ scene, data, params, ready, complete }) {
-    const spots: { sprite: string; x: number; y: number; flip?: boolean; letter_dx?: number; letter_dy?: number }[] = params.items ?? params.logs ?? [];
+    const spots: { sprite: string; x: number; y: number; flip?: boolean; scale?: number; letter_dx?: number; letter_dy?: number }[] = params.items ?? params.logs ?? [];
     const glowEffect = params.found_effect === 'glow';
     const pool: string[] = params.letter_pool ?? ALPHABET.slice(0, 10);
     const findAudio: string[] = params.find_audio ?? [];          // e.g. ["s02_find_log"] then the letter's name
@@ -56,14 +56,16 @@ export const letterHunt: Mechanic = {
     const logs = spots.map((sp, i) => {
       const img = makeImage(scene, sp.sprite, 0, 0, 230, 120);
       if (sp.flip && img instanceof Phaser.GameObjects.Image) img.setFlipX(true);
+      const sizeUp = sp.scale ?? params.item_scale ?? 1;   // make this one bigger (2) or smaller (0.5); its letter circle grows or shrinks with it
+      if (img instanceof Phaser.GameObjects.Image) img.setScale(img.scaleX * sizeUp, img.scaleY * sizeUp);
       const w = img instanceof Phaser.GameObjects.Image ? img.displayWidth : 230;
       const h = img instanceof Phaser.GameObjects.Image ? img.displayHeight : 120;
       const parts: Phaser.GameObjects.GameObject[] = [img];
       if (params.letter_badge) {   // a soft cream disc so the letter reads on busy pictures
-        parts.push(scene.add.circle(sp.letter_dx ?? 0, (sp.letter_dy ?? 0) + 2, 50, 0xfff3c9, 0.88).setStrokeStyle(5, 0x3d220f));
+        parts.push(scene.add.circle((sp.letter_dx ?? 0) * sizeUp, (sp.letter_dy ?? 0) * sizeUp + 2, 50 * sizeUp, 0xfff3c9, 0.88).setStrokeStyle(Math.max(2, 5 * sizeUp), 0x3d220f));
       }
-      const text = scene.add.text(sp.letter_dx ?? 0, (sp.letter_dy ?? 0) + 2, letters[i], {
-        fontSize: '84px', fontStyle: 'bold', fontFamily: 'Andika, sans-serif',
+      const text = scene.add.text((sp.letter_dx ?? 0) * sizeUp, (sp.letter_dy ?? 0) * sizeUp + 2, letters[i], {
+        fontSize: `${Math.round(84 * sizeUp)}px`, fontStyle: 'bold', fontFamily: 'Andika, sans-serif',
         color: params.letter_badge ? '#3d220f' : '#fff3c9', stroke: '#3d220f', strokeThickness: params.letter_badge ? 0 : 14
       }).setOrigin(0.5);
       parts.push(text);
