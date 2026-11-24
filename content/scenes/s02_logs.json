@@ -6,9 +6,9 @@
   "objects": [
     {
       "sprite": "spr_reign",
-      "x": 95,
-      "y": 752,
-      "height": 300,
+      "x": 500,
+      "y": 430,
+      "height": 215,
       "anchor": "bottom"
     }
   ],
@@ -90,7 +90,8 @@
         "scale": 0.55,
         "angle": 28
       }
-    ]
+    ],
+    "auto_complete": false
   },
   "dialog": [
     {

@@ -13,7 +13,7 @@ export class HintLadder {
   constructor(private opts: {
     hintAudio?: string[];
     pulse: () => void;
-    autoComplete: () => void;
+    autoComplete?: () => void;   // leave out to never finish the step for her
   }) {}
 
   miss() {
@@ -24,7 +24,9 @@ export class HintLadder {
     } else if (this.misses === 4) {
       this.opts.pulse();
       engine.play(this.opts.hintAudio?.[1] ?? this.opts.hintAudio?.[0]).then(() => {});
-      this.opts.autoComplete();
+      this.opts.autoComplete?.();
+    } else if (this.misses > 4 && !this.opts.autoComplete) {
+      this.opts.pulse();   // no auto-finish: keep gently pointing at the answer
     }
   }
 

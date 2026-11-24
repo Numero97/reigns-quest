@@ -82,7 +82,7 @@ export const letterHunt: Mechanic = {
         pulse?.remove();
         pulse = scene.tweens.add({ targets: t, scale: 1.3, duration: 280, yoyo: true, repeat: 5 });
       },
-      autoComplete: () => scene.time.delayedCall(1300, () => tap(target(), true))
+      autoComplete: params.auto_complete === false ? undefined : () => scene.time.delayedCall(1300, () => tap(target(), true))
     });
 
     // ---- tapping a log ----
