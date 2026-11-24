@@ -1,0 +1,139 @@
+{
+  "id": "s03_snakes",
+  "title": "Snakes on the trail",
+  "background": "bg_forest_trail",
+  "interaction_style": "point_and_click",
+  "objects": [
+    {
+      "sprite": "spr_reign",
+      "x": 110,
+      "y": 750,
+      "height": 300,
+      "anchor": "bottom"
+    }
+  ],
+  "mechanic": "letter_hunt",
+  "params": {
+    "letter_pool": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J"
+    ],
+    "find_audio": [
+      "s03_find_snake"
+    ],
+    "thats_audio": "thats",
+    "found_effect": "glow",
+    "letter_badge": true,
+    "items": [
+      {
+        "sprite": "spr_snake_trunk",
+        "x": 215,
+        "y": 330
+      },
+      {
+        "sprite": "spr_snake_branch",
+        "x": 330,
+        "y": 120,
+        "letter_dx": 20
+      },
+      {
+        "sprite": "spr_snake_trunk",
+        "x": 480,
+        "y": 330,
+        "flip": true
+      },
+      {
+        "sprite": "spr_snake_ground",
+        "x": 360,
+        "y": 610
+      },
+      {
+        "sprite": "spr_snake_ground",
+        "x": 770,
+        "y": 690,
+        "flip": true
+      }
+    ],
+    "exit": {
+      "x": 640,
+      "y": 470,
+      "w": 260,
+      "h": 230,
+      "prompt_audio": "s03_exit_prompt"
+    }
+  },
+  "dialog": [
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s03_d1",
+      "text": "Oh no! Betsy's paw print trail has disappeared. What are we going to do now?"
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s03_d2",
+      "text": "Maybe if we find all of the snakes they'll tell us where she went."
+    }
+  ],
+  "dialog_advance": "auto_after_audio",
+  "hint_audio": [
+    "s03_hint_1",
+    "s03_hint_2"
+  ],
+  "praise_dialog": [
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s02_praise_1",
+      "text": "You're working so hard, Reign!"
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s02_praise_2",
+      "text": "You're doing amazing!"
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s02_praise_3",
+      "text": "Great job, Reign!"
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s02_praise_4",
+      "text": "Awesome work!"
+    }
+  ],
+  "all_found_dialog": [
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s03_all_found",
+      "text": "Great job, Reign! Let's see if the snakes can help us! Snakes, have you seen Betsy?"
+    },
+    {
+      "speaker": "snake",
+      "portrait": "snake_head",
+      "audio": "s03_snake_answer",
+      "text": "Hmm... Brown, delicious-looking kitty? She wandered down this trail not too long ago."
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s03_follow",
+      "text": "Did you hear that, Reign? Let's follow Betsy down this trail!"
+    }
+  ],
+  "next": null
+}

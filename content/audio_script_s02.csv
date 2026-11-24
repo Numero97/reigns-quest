@@ -9,4 +9,4 @@ s02_praise_3,s02_logs,"Great job, Reign!",Same.
 s02_praise_4,s02_logs,Awesome work!,Same.
 s02_all_found,s02_logs,"Thank you for all your help, Reign! And look! Betsy's paw prints lead into the forest!",Excited on 'look'. Three small paw prints appear on the trail while you say it.
 thats,global,That's,"Used when she taps the wrong letter: 'That's' + the letter name + 'Find the log with the letter' + the target. Keep it flat and friendly, never scolding."
-s02_follow,s02_logs,"Let's follow her!","Excited, last line of the scene. Plays right after the paw prints line."
+s02_exit_prompt,s02_logs,Tap the glowing paw prints to follow Betsy!,Ear button and quiet-time reminder. Plays while the paw prints glow at the end of the scene.

@@ -7,24 +7,26 @@ import { runDialog, type DialogLine } from '../engine/dialog';
 import { ALPHABET, isKnown, letterName, letterSound, pickLetters, recordLetter, shuffle } from '../engine/letters';
 
 /**
- * Letters on objects (logs). Dad names a letter; she taps the object that has it.
- * Each correct object flies to a pile that grows, and Dad praises her.
- * Everything is set in the scene file's "params" (see content/scenes/s02_logs.json).
+ * Letters on objects (logs, snakes...). Dad names a letter; she taps the object that has it.
+ * Found objects either fly to a growing pile ("stack") or glow yellow ("found_effect": "glow"), and Dad praises her.
+ * At the end an optional glowing "exit" (like the trail) waits to be tapped to move on.
+ * Everything is set in the scene file's "params" (see content/scenes/s02_logs.json and s03_snakes.json).
  */
 export const letterHunt: Mechanic = {
   assets: d => [
-    ...(d.params?.logs ?? []).map((l: any) => l.sprite),
+    ...(d.params?.items ?? d.params?.logs ?? []).map((l: any) => l.sprite),
     ...(d.params?.stack?.sprites ?? []),
     ...(d.params?.trail_prints ?? []).map((p: any) => p.sprite)
   ],
 
   audio: d => [
     ...(d.params?.letter_pool ?? ALPHABET).flatMap((l: string) => [letterName(l), letterSound(l)]),
-    d.params?.thats_audio, ...(d.params?.find_audio ?? [])
+    d.params?.thats_audio, d.params?.exit?.prompt_audio, ...(d.params?.find_audio ?? [])
   ].filter(Boolean),
 
   start({ scene, data, params, ready, complete }) {
-    const spots: { sprite: string; x: number; y: number; angle?: number }[] = params.logs ?? [];
+    const spots: { sprite: string; x: number; y: number; flip?: boolean; letter_dx?: number; letter_dy?: number }[] = params.items ?? params.logs ?? [];
+    const glowEffect = params.found_effect === 'glow';
     const pool: string[] = params.letter_pool ?? ALPHABET.slice(0, 10);
     const findAudio: string[] = params.find_audio ?? [];          // e.g. ["s02_find_log"] then the letter's name
     const praise: DialogLine[] = shuffle(data.praise_dialog ?? []);
@@ -50,20 +52,39 @@ export const letterHunt: Mechanic = {
       scene.tweens.add({ targets: img, scale: { from: 0.75, to: 1 }, duration: 350, ease: 'Back.easeOut' });
     };
 
-    // ---- the scattered logs, each with its letter ----
+    // ---- the scattered objects, each with its letter ----
     const logs = spots.map((sp, i) => {
       const img = makeImage(scene, sp.sprite, 0, 0, 230, 120);
+      if (sp.flip && img instanceof Phaser.GameObjects.Image) img.setFlipX(true);
       const w = img instanceof Phaser.GameObjects.Image ? img.displayWidth : 230;
       const h = img instanceof Phaser.GameObjects.Image ? img.displayHeight : 120;
-      const text = scene.add.text(0, 2, letters[i], {
+      const parts: Phaser.GameObjects.GameObject[] = [img];
+      if (params.letter_badge) {   // a soft cream disc so the letter reads on busy pictures
+        parts.push(scene.add.circle(sp.letter_dx ?? 0, (sp.letter_dy ?? 0) + 2, 50, 0xfff3c9, 0.88).setStrokeStyle(5, 0x3d220f));
+      }
+      const text = scene.add.text(sp.letter_dx ?? 0, (sp.letter_dy ?? 0) + 2, letters[i], {
         fontSize: '84px', fontStyle: 'bold', fontFamily: 'Trebuchet MS, Verdana, sans-serif',
-        color: '#fff3c9', stroke: '#3d220f', strokeThickness: 14
+        color: params.letter_badge ? '#3d220f' : '#fff3c9', stroke: '#3d220f', strokeThickness: params.letter_badge ? 0 : 14
       }).setOrigin(0.5);
-      const go = scene.add.container(sp.x, sp.y, [img, text]).setSize(w, Math.max(h, 110)).setDepth(10 + i).setAlpha(0);
+      parts.push(text);
+      const go = scene.add.container(sp.x, sp.y, parts).setSize(w, Math.max(h, 110)).setDepth(10 + i).setAlpha(0);
       go.setInteractive({ useHandCursor: true });
       go.on('pointerdown', () => tap(i));
-      return { go, letter: letters[i], found: false };
+      return { go, img, letter: letters[i], found: false };
     });
+
+    /** Makes a found object glow yellow (and keep glowing). */
+    const glowYellow = (L: (typeof logs)[number]) => {
+      const halo = scene.add.ellipse(0, 0, L.go.width * 0.95, L.go.height * 1.05, 0xfff04d, 0);
+      L.go.addAt(halo, 0);
+      scene.tweens.add({ targets: halo, fillAlpha: 0.4, duration: 400 });
+      scene.tweens.add({ targets: halo, scaleX: 1.1, scaleY: 1.1, duration: 800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+      const fx = (L.img as any).preFX;
+      if (fx) {
+        const g = fx.addGlow(0xfff04d, 0, 0, false, 0.1, 18);
+        scene.tweens.add({ targets: g, outerStrength: 7, duration: 700, yoyo: true, repeat: -1 });
+      } else if (L.img instanceof Phaser.GameObjects.Image) L.img.setTint(0xffffaa);
+    };
 
     const promptFor = (i: number) => [...findAudio, letterName(logs[i].letter)];
     const askNext = async () => {
@@ -111,7 +132,8 @@ export const letterHunt: Mechanic = {
       L.go.setScale(1);
       sparkle(scene, L.go.x, L.go.y);
       found++;
-      scene.tweens.add({
+      if (glowEffect) glowYellow(L);
+      else scene.tweens.add({
         targets: L.go, x: params.stack.x, y: params.stack.y - 30, scale: 0.35, alpha: 0.2, duration: 750, delay: 250, ease: 'Sine.easeIn',
         onComplete: () => { L.go.destroy(); showStack(found); }
       });
@@ -133,10 +155,33 @@ export const letterHunt: Mechanic = {
           scene.tweens.add({ targets: img, alpha: 0.95, duration: 400 });
           sparkle(scene, p.x, p.y);
         }));
-        if (data.all_found_dialog) await runDialog(scene, [data.all_found_dialog]);
-        await new Promise<void>(r => scene.time.delayedCall(1200, () => r()));
-        complete();
+        const closing: DialogLine[] = ([] as DialogLine[]).concat(data.all_found_dialog ?? []);   // one line or a list
+        if (closing.length) await runDialog(scene, closing);
+        await showExit();
       }
+    };
+
+    // ---- the glowing "exit" (e.g. the trail): she taps it to go on ----
+    const showExit = async () => {
+      const ex = params.exit as { x: number; y: number; w: number; h: number; prompt_audio?: string } | undefined;
+      if (!ex) { await new Promise<void>(r => scene.time.delayedCall(1200, () => r())); complete(); return; }
+      const glow = scene.add.container(ex.x, ex.y).setDepth(7).setAlpha(0);
+      const g = scene.add.graphics();
+      for (let k = 6; k >= 1; k--) g.fillStyle(0xfff27a, 0.09).fillEllipse(0, 0, ex.w * (0.5 + k * 0.1), ex.h * (0.5 + k * 0.1));
+      glow.add(g);
+      scene.tweens.add({ targets: glow, alpha: 1, duration: 600 });
+      scene.tweens.add({ targets: glow, scale: 1.1, duration: 800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut', delay: 600 });
+      const zone = scene.add.zone(ex.x, ex.y, ex.w + 40, ex.h + 40).setInteractive({ useHandCursor: true }).setDepth(30);
+      zone.on('pointerdown', () => {
+        if (engine.locked) return;
+        zone.disableInteractive();
+        engine.lockInput(true);
+        sparkle(scene, ex.x, ex.y);
+        scene.time.delayedCall(500, () => complete());
+      });
+      engine.setPrompt(ex.prompt_audio ?? null);
+      engine.lockInput(false);
+      await engine.replayPrompt();
     };
 
     // ---- taps on empty ground just make a soft ring ----

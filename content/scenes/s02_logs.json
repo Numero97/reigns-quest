@@ -59,7 +59,7 @@
     ],
     "stack": {
       "x": 250,
-      "y": 450,
+      "y": 500,
       "sprites": [
         "spr_log_stack_1",
         "spr_log_stack_2",
@@ -91,7 +91,14 @@
         "angle": 28
       }
     ],
-    "auto_complete": false
+    "auto_complete": false,
+    "exit": {
+      "x": 742,
+      "y": 360,
+      "w": 150,
+      "h": 190,
+      "prompt_audio": "s02_exit_prompt"
+    }
   },
   "dialog": [
     {
@@ -138,5 +145,5 @@
     "audio": "s02_all_found",
     "text": "Thank you for all your help, Reign! And look! Betsy's paw prints lead into the forest!"
   },
-  "next": null
+  "next": "s03_snakes"
 }

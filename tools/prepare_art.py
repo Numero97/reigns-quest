@@ -19,6 +19,7 @@ OUT = ROOT / "public" / "assets"
 BACKGROUNDS = {  # source file -> game id
     "family_cabin.png": "bg_cabin_morning",
     "cabin_outside.png": "bg_cabin_outside",
+    "sunlit_forest_trail.png": ("bg_forest_trail", 0.45),   # wide picture: cropped to 4:3; 0.45 = how far across to centre the crop
 }
 SPRITES = {  # source file -> (game id, final height in pixels)
     "paw_print.png": ("spr_pawprint", 160),
@@ -34,6 +35,9 @@ SPRITES_BY_WIDTH = {  # source file -> (game id, width in pixels). Keeps the who
     "Log_3.png": ("spr_log_3", 230),
     "Log_4.png": ("spr_log_4", 230),
     "Log_5.png": ("spr_log_5", 230),
+    "snake_wrapped_around_trunk.png": ("spr_snake_trunk", 250),
+    "snake_wrapped_around_branch.png": ("spr_snake_branch", 400),
+    "snake_ground.png": ("spr_snake_ground", 440),
     "log_stack_1.png": ("spr_log_stack_1", 150),   # one log
     "log_stack_2.png": ("spr_log_stack_2", 175),
     "log_stack_3.png": ("spr_log_stack_3", 195),
@@ -47,6 +51,8 @@ GLOW_REGION = (735, 40, 1024, 330)   # left, top, right, bottom on the 1024x768 
 GLOW_FEATHER = 40
 # Poses that must be drawn at the same size as another picture (so swapping them doesn't make her grow or shrink)
 SAME_SIZE_AS = {"sprite_reign_surprised.png": "sprite_reign.png"}
+# Snake head frames for the dialog box: green removed, same square canvas for all three so the mouth does not jump
+CUTOUT_FACES = {"snake_head_closed.png": "snake_head_closed", "snake_head_middle.png": "snake_head_middle", "snake_head_open.png": "snake_head_open"}
 FACES = {  # source file -> game id
     "face_dad_closed.png": "dad_face_closed",
     "face_dad_middle.png": "dad_face_middle",
@@ -78,11 +84,20 @@ def main():
     for d in ("backgrounds", "sprites"):
         (OUT / d).mkdir(parents=True, exist_ok=True)
 
-    for src, name in BACKGROUNDS.items():
+    for src, spec in BACKGROUNDS.items():
         p = SRC / src
-        if p.exists():
-            Image.open(p).convert("RGB").resize((1024, 768), Image.LANCZOS).save(OUT / "backgrounds" / f"{name}.png", optimize=True)
-            print("background:", name)
+        if not p.exists():
+            continue
+        name, focus = (spec, 0.5) if isinstance(spec, str) else spec
+        img = Image.open(p).convert("RGB")
+        if abs(img.width / img.height - 4 / 3) > 0.02:   # not 4:3: crop a 4:3 window out of it
+            cw = round(img.height * 4 / 3) if img.width / img.height > 4 / 3 else img.width
+            ch = img.height if cw != img.width else round(img.width * 3 / 4)
+            left = round(min(max(img.width * focus - cw / 2, 0), img.width - cw))
+            top = round((img.height - ch) / 2)
+            img = img.crop((left, top, left + cw, top + ch))
+        img.resize((1024, 768), Image.LANCZOS).save(OUT / "backgrounds" / f"{name}.png", optimize=True)
+        print("background:", name)
 
     for src, (name, height) in SPRITES.items():
         p = SRC / src
@@ -125,6 +140,12 @@ def main():
         patch.putalpha(Image.fromarray((a * 255).astype(np.uint8)))
         patch.save(OUT / "sprites" / f"spr_window_glow_{n}.png", optimize=True)
         print("window glow frame:", n, "centre", ((l + r) / 2, (t + b) / 2))
+
+    for src, name in CUTOUT_FACES.items():
+        p = SRC / src
+        if p.exists():
+            remove_flat_background(Image.open(p)).resize((256, 256), Image.LANCZOS).save(OUT / "sprites" / f"{name}.png", optimize=True)
+            print("face (cut out):", name)
 
     for src, name in FACES.items():
         p = SRC / src

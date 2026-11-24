@@ -22,6 +22,7 @@
   "show_scene_picker": true,
   "scene_order": [
     "s01_house",
-    "s02_logs"
+    "s02_logs",
+    "s03_snakes"
   ]
 }

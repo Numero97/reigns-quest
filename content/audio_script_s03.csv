@@ -1,0 +1,10 @@
+id,scene,text,notes
+s03_d1,s03_snakes,Oh no! Betsy's paw print trail has disappeared. What are we going to do now?,"Worried, but still gentle. Leave a beat after the question."
+s03_d2,s03_snakes,Maybe if we find all of the snakes they'll tell us where she went.,"Hopeful, like you've had an idea."
+s03_find_snake,s03_snakes,Can you find the snake with the letter,"The letter name plays right after this. End on an up-tone, no pause at the end."
+s03_hint_1,s03_snakes,Hmm... look closely at the snakes. I think I see it!,After 2 wrong taps. The engine pulses the right snake.
+s03_hint_2,s03_snakes,There it is! Tap the snake that's sparkling.,After 4 wrong taps.
+s03_all_found,s03_snakes,"Great job, Reign! Let's see if the snakes can help us! Snakes, have you seen Betsy?","Proud, then calling out to the snakes."
+s03_snake_answer,s03_snakes,"Hmm... Brown, delicious-looking kitty? She wandered down this trail not too long ago.","The snake's voice. Slow, slithery, silly. 'Delicious-looking' is the fun part."
+s03_follow,s03_snakes,"Did you hear that, Reign? Let's follow Betsy down this trail!",Excited. After this the trail glows and she taps it.
+s03_exit_prompt,s03_snakes,Tap the glowing trail to follow Betsy!,Ear button and quiet-time reminder.
