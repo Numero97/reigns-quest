@@ -7,7 +7,7 @@
     {
       "sprite": "spr_reign",
       "x": 500,
-      "y": 430,
+      "y": 500,
       "height": 215,
       "anchor": "bottom"
     }
@@ -59,7 +59,7 @@
     ],
     "stack": {
       "x": 250,
-      "y": 650,
+      "y": 450,
       "sprites": [
         "spr_log_stack_1",
         "spr_log_stack_2",
@@ -138,11 +138,5 @@
     "audio": "s02_all_found",
     "text": "Thank you for all your help, Reign! And look! Betsy's paw prints lead into the forest!"
   },
-  "next": null,
-  "success_dialog": {
-    "speaker": "dad",
-    "portrait": "dad_face",
-    "audio": "s02_follow",
-    "text": "Let's follow her!"
-  }
+  "next": null
 }
