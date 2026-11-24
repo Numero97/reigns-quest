@@ -38,5 +38,5 @@
   "window_prompt_audio": "s01_window_prompt",
   "success_audio": "s01_success",
   "success_dialog": { "speaker": "dad", "portrait": "dad_face_worried", "swap": { "spr_reign": "spr_reign_surprised" }, "text": "Betsy went outside! Let's follow her into the woods!" },
-  "next": "s02_snakes"
+  "next": "s02_logs"
 }

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { engine } from '../engine/engine';
-import { scenes, collectAudioIds, type SceneData } from '../engine/content';
+import { scenes, collectAudioIds, walkObjects, type SceneData } from '../engine/content';
 import { mechanics, fallback } from '../mechanics';
 import have from 'virtual:asset-list';
 import { bouncingPaw, makeBackground, makeImage } from '../engine/ui';
@@ -41,10 +41,12 @@ export class Stage extends Phaser.Scene {
     this.load.setPath('assets');
     // Only load files that really exist; anything else becomes a placeholder / silent line.
     const mechanic = mechanics[d.mechanic] ?? fallback;
-    const portraits = [...this.dialogLines(), d.success_dialog, d.all_found_dialog].filter(Boolean)
-      .flatMap((l: DialogLine) => (l.portrait ? [`${l.portrait}_closed`, `${l.portrait}_middle`, `${l.portrait}_open`] : []));
-    const swapTargets = [...this.dialogLines(), d.success_dialog, d.all_found_dialog].filter(Boolean)
-      .flatMap((l: DialogLine) => Object.values(l.swap ?? {}));
+    // every dialog line anywhere in the scene file: load its Dad/other face frames and any picture it swaps in
+    const portraits: string[] = [], swapTargets: string[] = [];
+    walkObjects(d, o => {
+      if (typeof o.portrait === 'string') portraits.push(`${o.portrait}_closed`, `${o.portrait}_middle`, `${o.portrait}_open`);
+      if (o.swap && typeof o.swap === 'object') swapTargets.push(...Object.values<string>(o.swap));
+    });
     const sprites = new Set<string>([...(mechanic.assets?.(d) ?? []), ...(d.objects ?? []).map(o => o.sprite), ...portraits, ...swapTargets]);
     const audio = new Set<string>([...collectAudioIds(d), ...(mechanic.audio?.(d) ?? [])]);
     if (d.background && have.backgrounds.includes(d.background) && !this.textures.exists(d.background)) this.load.image(d.background, `backgrounds/${d.background}.png`);

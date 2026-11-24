@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import type { SceneData } from '../engine/content';
 import { placeholder } from './placeholder';
 import { followTrail } from './follow_trail';
+import { letterHunt } from './letter_hunt';
 
 export interface MechanicContext {
   scene: Phaser.Scene;
@@ -24,7 +25,8 @@ export interface Mechanic {
 
 export const mechanics: Record<string, Mechanic> = {
   placeholder,
-  follow_trail: followTrail
+  follow_trail: followTrail,
+  letter_hunt: letterHunt
   // alphabet_path, ... get added here as they are built
 };
 

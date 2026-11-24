@@ -1,0 +1,11 @@
+id,scene,text,notes
+s02_d1,s02_logs,It looks like Betsy knocked over the log pile jumping through the window. Can you help me pick them up?,"Warm, a little amused. Real question; pause after."
+s02_find_log,s02_logs,Find the log with the letter,"Say this, then the letter name plays right after. End the line up-tone, no pause at the end."
+s02_hint_1,s02_logs,Hmm... look closely at the logs. I think I see it!,After 2 wrong taps. The engine pulses the right log.
+s02_hint_2,s02_logs,There it is! Tap the log that's sparkling.,After 4 wrong taps. The engine picks it up for her.
+s02_praise_1,s02_logs,"You're working so hard, Reign!",Plays after one of the first four logs. Cheerful.
+s02_praise_2,s02_logs,You're doing amazing!,Same.
+s02_praise_3,s02_logs,"Great job, Reign!",Same.
+s02_praise_4,s02_logs,Awesome work!,Same.
+s02_all_found,s02_logs,"Thank you for all your help, Reign! And look! Betsy's paw prints lead into the forest!",Excited on 'look'. Three small paw prints appear on the trail while you say it.
+thats,global,That's,"Used when she taps the wrong letter: 'That's' + the letter name + 'Find the log with the letter' + the target. Keep it flat and friendly, never scolding."

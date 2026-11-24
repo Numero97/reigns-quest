@@ -1,0 +1,141 @@
+{
+  "id": "s02_logs",
+  "title": "Betsy knocked over the log pile",
+  "background": "bg_cabin_outside",
+  "interaction_style": "point_and_click",
+  "objects": [
+    {
+      "sprite": "spr_reign",
+      "x": 95,
+      "y": 752,
+      "height": 300,
+      "anchor": "bottom"
+    }
+  ],
+  "mechanic": "letter_hunt",
+  "params": {
+    "letter_pool": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J"
+    ],
+    "find_audio": [
+      "s02_find_log"
+    ],
+    "thats_audio": "thats",
+    "logs": [
+      {
+        "sprite": "spr_log_1",
+        "x": 380,
+        "y": 545
+      },
+      {
+        "sprite": "spr_log_2",
+        "x": 665,
+        "y": 465
+      },
+      {
+        "sprite": "spr_log_3",
+        "x": 850,
+        "y": 555
+      },
+      {
+        "sprite": "spr_log_4",
+        "x": 580,
+        "y": 690
+      },
+      {
+        "sprite": "spr_log_5",
+        "x": 320,
+        "y": 700
+      }
+    ],
+    "stack": {
+      "x": 250,
+      "y": 610,
+      "sprites": [
+        "spr_log_stack_1",
+        "spr_log_stack_2",
+        "spr_log_stack_3",
+        "spr_log_stack_4",
+        "spr_log_stack_5"
+      ]
+    },
+    "trail_prints": [
+      {
+        "sprite": "spr_pawprint",
+        "x": 716,
+        "y": 392,
+        "scale": 0.9,
+        "angle": 20
+      },
+      {
+        "sprite": "spr_pawprint",
+        "x": 742,
+        "y": 358,
+        "scale": 0.7,
+        "angle": 25
+      },
+      {
+        "sprite": "spr_pawprint",
+        "x": 764,
+        "y": 330,
+        "scale": 0.55,
+        "angle": 28
+      }
+    ]
+  },
+  "dialog": [
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s02_d1",
+      "text": "It looks like Betsy knocked over the log pile jumping through the window. Can you help me pick them up?"
+    }
+  ],
+  "dialog_advance": "auto_after_audio",
+  "hint_audio": [
+    "s02_hint_1",
+    "s02_hint_2"
+  ],
+  "praise_dialog": [
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s02_praise_1",
+      "text": "You're working so hard, Reign!"
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s02_praise_2",
+      "text": "You're doing amazing!"
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s02_praise_3",
+      "text": "Great job, Reign!"
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s02_praise_4",
+      "text": "Awesome work!"
+    }
+  ],
+  "all_found_dialog": {
+    "speaker": "dad",
+    "portrait": "dad_face",
+    "audio": "s02_all_found",
+    "text": "Thank you for all your help, Reign! And look! Betsy's paw prints lead into the forest!"
+  },
+  "next": null
+}

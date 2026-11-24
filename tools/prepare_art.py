@@ -18,6 +18,7 @@ OUT = ROOT / "public" / "assets"
 
 BACKGROUNDS = {  # source file -> game id
     "family_cabin.png": "bg_cabin_morning",
+    "cabin_outside.png": "bg_cabin_outside",
 }
 SPRITES = {  # source file -> (game id, final height in pixels)
     "paw_print.png": ("spr_pawprint", 160),
@@ -25,6 +26,19 @@ SPRITES = {  # source file -> (game id, final height in pixels)
     "sprite_reign_surprised.png": ("spr_reign_surprised", 480),
     "sprite_dad.png": ("spr_dad", 480),
     "sprite_betsy.png": ("spr_betsy", 360),
+}
+SPRITES_BY_WIDTH = {  # source file -> (game id, width in pixels). Keeps the whole set the same size.
+    "Log_1 (1).png": ("spr_log_1", 230),
+    "Log_1.png": ("spr_log_1", 230),
+    "Log_2.png": ("spr_log_2", 230),
+    "Log_3.png": ("spr_log_3", 230),
+    "Log_4.png": ("spr_log_4", 230),
+    "Log_5.png": ("spr_log_5", 230),
+    "log_stack_1.png": ("spr_log_stack_1", 150),   # one log
+    "log_stack_2.png": ("spr_log_stack_2", 175),
+    "log_stack_3.png": ("spr_log_stack_3", 195),
+    "log_stack_4.png": ("spr_log_stack_4", 205),
+    "log_stack_5.png": ("spr_log_stack_5", 215),
 }
 # Window glow frames: full-room pictures with the window glowing. Only the window area is cut out
 # (with soft edges) so it can be laid over the normal background and animated.
@@ -85,6 +99,15 @@ def main():
         else:
             w = round(img.width * height / img.height)
         img.resize((w, height), Image.LANCZOS).save(OUT / "sprites" / f"{name}.png", optimize=True)
+        print("sprite:", name)
+
+    for src, (name, width) in SPRITES_BY_WIDTH.items():
+        p = SRC / src
+        if not p.exists():
+            continue
+        img = remove_flat_background(Image.open(p))
+        img = img.crop(img.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox())
+        img.resize((width, round(img.height * width / img.width)), Image.LANCZOS).save(OUT / "sprites" / f"{name}.png", optimize=True)
         print("sprite:", name)
 
     for n in (1, 2, 3):

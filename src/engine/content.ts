@@ -59,3 +59,9 @@ export function collectAudioIds(value: any, out = new Set<string>(), key = ''): 
   else if (value && typeof value === 'object') for (const [k, v] of Object.entries(value)) collectAudioIds(v, out, k);
   return out;
 }
+
+/** Visit every object nested anywhere inside a scene (used to find portraits and picture swaps). */
+export function walkObjects(value: any, fn: (o: Record<string, any>) => void) {
+  if (Array.isArray(value)) value.forEach(v => walkObjects(v, fn));
+  else if (value && typeof value === 'object') { fn(value); Object.values(value).forEach(v => walkObjects(v, fn)); }
+}

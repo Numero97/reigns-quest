@@ -2,12 +2,25 @@
   "cat_name": "Betsy",
   "cat_word": "BETSY",
   "difficulty": {
-    "letters_known": ["A","B","C","D","E","F","G","H","I"],
+    "letters_known": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I"
+    ],
     "letters_pool": "A-Z",
     "new_letter_ratio": 0.4,
     "count_rote_max": 20,
     "quantity_max": 10,
     "addition_max_sum": 10
   },
-  "scene_order": ["s01_house"]
+  "scene_order": [
+    "s01_house",
+    "s02_logs"
+  ]
 }

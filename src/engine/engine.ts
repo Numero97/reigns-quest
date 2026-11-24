@@ -10,7 +10,8 @@ class Engine {
   game!: Phaser.Game;
   events = new Phaser.Events.EventEmitter();
   private current: Phaser.Sound.BaseSound | null = null;
-  private promptId: string | null = null;
+  private promptIds: string[] = [];
+  private seqToken = 0;
   private inputLocked = true;
 
   get debug() { return save.debug; }
@@ -50,14 +51,30 @@ class Engine {
   stopVoice() { if (this.current) { const s = this.current; this.current = null; s.stop(); s.destroy(); } }
 
   /** The line the ear button repeats. */
-  setPrompt(id: string | null) { this.promptId = id; }
-  replayPrompt() { if (this.promptId) this.play(this.promptId); }
+  setPrompt(id: string | string[] | null) { this.promptIds = id == null ? [] : Array.isArray(id) ? id : [id]; }
+  replayPrompt(): Promise<void> { return this.playSeq(this.promptIds); }
+
+  /** Speak several lines in a row ("Find the log with the letter" + "B"). A newer call cuts the old one off. */
+  async playSeq(ids: string[]) {
+    const token = ++this.seqToken;
+    const missing = ids.filter(id => !this.hasAudio(id));
+    if (ids.length > 1 && missing.length === ids.length) {   // nothing recorded yet: show one caption, not several
+      this.stopVoice();
+      if (this.debug) { this.events.emit('caption', ids.map(id => lineText[id] ?? id).join(' ')); await new Promise(r => setTimeout(r, 3000)); }
+      else await new Promise(r => setTimeout(r, 300));
+      return;
+    }
+    for (const id of ids) {
+      if (token !== this.seqToken) return;
+      await this.play(id);
+    }
+  }
 
   // ---- scene flow ----
   startScene(id: string) {
     if (!scenes[id]) return;
     this.stopVoice();
-    this.promptId = null;
+    this.promptIds = [];
     this.inputLocked = true;
     save.lastScene = id; persist();
     if (this.game.scene.isActive('Title')) this.game.scene.stop('Title');
@@ -77,7 +94,7 @@ class Engine {
 
   goToTitle() {
     this.stopVoice();
-    this.promptId = null;
+    this.promptIds = [];
     this.game.scene.stop('Stage');
     this.game.scene.start('Title');
   }
