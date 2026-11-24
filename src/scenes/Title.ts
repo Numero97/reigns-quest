@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { engine } from '../engine/engine';
-import { sceneOrder } from '../engine/content';
+import { sceneOrder, scenes, config } from '../engine/content';
 import { save } from '../engine/save';
 
 /** The first screen: one big Play button. Tapping it also unlocks sound on the iPad. */
@@ -21,12 +21,31 @@ export class Title extends Phaser.Scene {
     btn.setSize(340, 340).setInteractive({ useHandCursor: true });
     this.tweens.add({ targets: btn, scale: 1.06, duration: 800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
-    btn.once('pointerdown', () => {
+    let starting = false;
+    const begin = (sceneId: string) => {
+      if (starting) return;
+      starting = true;
       const ctx = (this.sound as Phaser.Sound.WebAudioSoundManager).context;
       if (ctx && ctx.state !== 'running') ctx.resume();
       this.sound.mute = save.muted;
-      const resume = save.lastScene && sceneOrder.includes(save.lastScene) ? save.lastScene : sceneOrder[0];
-      engine.startScene(resume);
-    });
+      engine.startScene(sceneId);
+    };
+    btn.on('pointerdown', () => begin(save.lastScene && sceneOrder.includes(save.lastScene) ? save.lastScene : sceneOrder[0]));
+
+    // Scene picker: small numbered buttons along the bottom (set "show_scene_picker": false in config.json to hide)
+    if (config.show_scene_picker !== false && sceneOrder.length > 1) {
+      const gap = Math.min(110, 900 / sceneOrder.length);
+      const x0 = 512 - ((sceneOrder.length - 1) * gap) / 2;
+      sceneOrder.forEach((id, i) => {
+        const b = this.add.container(x0 + i * gap, 655);
+        b.add([
+          this.add.circle(0, 0, 30, 0xffffff, 0.75).setStrokeStyle(3, 0x2d4a7a),
+          this.add.text(0, -2, String(i + 1), { fontSize: '30px', color: '#2d4a7a', fontStyle: 'bold' }).setOrigin(0.5),
+          this.add.text(0, 40, String(scenes[id].title ?? id), { fontSize: '15px', color: '#2d4a7a', align: 'center', wordWrap: { width: gap - 6 } }).setOrigin(0.5, 0)
+        ]);
+        b.setSize(gap - 6, 100).setInteractive({ useHandCursor: true });
+        b.on('pointerdown', () => begin(id));
+      });
+    }
   }
 }

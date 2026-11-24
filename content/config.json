@@ -19,6 +19,7 @@
     "quantity_max": 10,
     "addition_max_sum": 10
   },
+  "show_scene_picker": true,
   "scene_order": [
     "s01_house",
     "s02_logs"
