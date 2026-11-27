@@ -1,0 +1,89 @@
+{
+  "id": "s06_bridge",
+  "title": "The broken bridge",
+  "background": "bg_bridge_broken",
+  "fade_in_ms": 200,
+  "interaction_style": "point_and_click",
+  "objects": [
+    { "sprite": "spr_reign",  "x": 330, "y": 565, "height": 380, "anchor": "bottom" },
+    { "sprite": "spr_beaver", "x": 700, "y": 565, "height": 340, "anchor": "bottom", "flip": true }
+  ],
+  "mechanic": "number_logs",
+  "params": {
+    "leave": ["spr_reign", "spr_beaver"],
+    "numbers": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "to_find": 5,
+    "auto_complete": false,
+    "find_audio": ["s06_select"],
+
+    "log_frames": ["spr_float_log_1", "spr_float_log_2", "spr_float_log_3"],
+    "frames_per_second": 4,
+    "lanes": [
+      { "y": 275, "scale": 0.82, "speed": 55, "logs": 2 },
+      { "y": 372, "scale": 0.92, "speed": 72, "logs": 2 },
+      { "y": 470, "scale": 1,    "speed": 48, "logs": 1 }
+    ],
+    "front_picture": "spr_bridge_rails",
+    "stack": {
+      "x": 512, "y": 700,
+      "sprites": ["spr_log_stack_1", "spr_log_stack_2", "spr_log_stack_3", "spr_log_stack_4", "spr_log_stack_5"]
+    },
+
+    "done_background": "bg_bridge_repaired",
+    "trail_prints": [
+      { "sprite": "spr_pawprint", "x": 522, "y": 182, "scale": 0.68, "angle": -12 },
+      { "sprite": "spr_pawprint", "x": 512, "y": 143, "scale": 0.58, "angle": 5 },
+      { "sprite": "spr_pawprint", "x": 532, "y": 110, "scale": 0.48, "angle": 35 },
+      { "sprite": "spr_pawprint", "x": 556, "y": 82,  "scale": 0.4,  "angle": 45 }
+    ],
+    "exit": {
+      "x": 568, "y": 44, "w": 160, "h": 110,
+      "glow_frames": ["spr_trail_pulse_1", "spr_trail_pulse_2", "spr_trail_pulse_3", "spr_trail_pulse_4"],
+      "glow_scale": 0.55, "glow_opacity": 0.85
+    }
+  },
+  "done_dialog": [
+    {
+      "speaker": "beaver",
+      "portrait": "beaver_face",
+      "audio": "s06_wood",
+      "text": "That's all the wood we need. We'll be able to get the bridge fixed now."
+    }
+  ],
+  "after_fix_dialog": [
+    {
+      "speaker": "beaver",
+      "portrait": "beaver_face",
+      "audio": "s06_thanks",
+      "text": "Thanks for all your help, Reign!"
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s06_d3",
+      "text": "Great work, Reign! Now we've got to hurry and find Betsy before the wolf catches us!"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "dad",
+      "portrait": "dad_face_worried",
+      "audio": "s06_d1",
+      "text": "What are we going to do? The wolf will get us if we can't get across this river!"
+    },
+    {
+      "speaker": "beaver",
+      "portrait": "beaver_face",
+      "audio": "s06_beaver",
+      "text": "My family and I were going to fix this bridge. If you help us, we can build it faster."
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s06_d2",
+      "text": "Perfect! Reign, let's help the beavers find the right wood for the bridge!"
+    }
+  ],
+  "dialog_advance": "auto_after_audio",
+  "next": null
+}

@@ -6,14 +6,17 @@
   "objects": [
     {
       "sprite": "spr_reign",
-      "x": 110,
-      "y": 750,
+      "x": 570,
+      "y": 525,
+      "scale": 0.3,
       "height": 300,
       "anchor": "bottom"
     }
   ],
   "mechanic": "letter_hunt",
   "params": {
+    "auto_complete": false,
+    "learning": "names",
     "letter_pool": [
       "A",
       "B",
@@ -35,9 +38,10 @@
     "items": [
       {
         "sprite": "spr_snake_trunk",
-        "x": 304,
-        "y": 330,
-        "scale": 0.6
+        "x": 305,
+        "y": 310,
+        "scale": 0.58,
+        "rotate": 5
       },
       {
         "sprite": "spr_snake_branch",
@@ -67,12 +71,25 @@
         "scale": 1
       }
     ],
+    "trail_prints": [
+      { "sprite": "spr_pawprint", "x": 665, "y": 460, "scale": 0.8,  "angle": 20 },
+      { "sprite": "spr_pawprint", "x": 730, "y": 428, "scale": 0.65, "angle": 22 },
+      { "sprite": "spr_pawprint", "x": 672, "y": 395, "scale": 0.52, "angle": 25 }
+    ],
     "exit": {
-      "x": 640,
-      "y": 470,
+      "x": 690,
+      "y": 370,
       "w": 260,
       "h": 230,
-      "prompt_audio": "s03_exit_prompt"
+      "prompt_audio": "s03_exit_prompt",
+      "glow_frames": [
+        "spr_trail_pulse_1",
+        "spr_trail_pulse_2",
+        "spr_trail_pulse_3",
+        "spr_trail_pulse_4"
+      ],
+      "glow_scale": 1.3,
+      "glow_opacity": 0.75
     }
   },
   "dialog": [
@@ -80,13 +97,19 @@
       "speaker": "dad",
       "portrait": "dad_face",
       "audio": "s03_d1",
-      "text": "Oh no! Betsy's paw print trail has disappeared. What are we going to do now?"
+      "text": "Oh no! Betsy's paw print trail has disappeared. What are we going to do now?",
+      "swap": {
+        "spr_reign": "spr_reign_surprised"
+      }
     },
     {
       "speaker": "dad",
       "portrait": "dad_face",
       "audio": "s03_d2",
-      "text": "Maybe if we find all of the snakes they'll tell us where she went."
+      "text": "Maybe if we find all of the snakes they'll tell us where she went.",
+      "swap": {
+        "spr_reign": "spr_reign"
+      }
     }
   ],
   "dialog_advance": "auto_after_audio",

@@ -1,0 +1,14 @@
+id,scene,text,notes
+s04_d1,s04_bunny,"Reign, this bunny looks sad, we should see what happened!",Concerned and kind.
+s04_bunny,s04_bunny,A crazy cat bumped into me and I lost all of my vegetables. Can you help me find them all?,"The bunny's voice: small, sad, hopeful at the end."
+s04_d2,s04_bunny,"We can help this bunny find their vegetables, right, Reign?!",Excited and encouraging. The matching game starts right after.
+s04_veg_beet,s04_bunny,Beet!,Plays when she matches the two beets. Short and happy.
+s04_veg_broccoli,s04_bunny,Broccoli!,Plays when she matches the two broccolis.
+s04_veg_carrot,s04_bunny,Carrot!,Plays when she matches the two carrots.
+s04_veg_pumpkin,s04_bunny,Pumpkin!,Plays when she matches the two pumpkins.
+s04_veg_squash,s04_bunny,Squash!,Plays when she matches the two squashes.
+s04_veg_zucchini,s04_bunny,Zucchini!,Plays when she matches the two zucchinis.
+s04_thanks,s04_bunny,"Oh, thank you, Reign! How can I ever repay you?",Bunny voice: happy and grateful.
+s04_d3,s04_bunny,You said a cat bumped into you earlier? Do you know which way she went?,Curious. Ends on an up-tone.
+s04_which_way,s04_bunny,She went racing down the trail.,Bunny voice: pointing the way.
+s04_d4,s04_bunny,"Ok, let's go find Betsy, Reign!",Excited and ready to go.

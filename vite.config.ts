@@ -8,6 +8,19 @@ function assetList() {
   return {
     name: 'asset-list',
     resolveId: (x: string) => (x === id ? '\0' + id : null),
+    // while playing locally: when art or audio files are added or changed, refresh the list and reload the page
+    configureServer(server: any) {
+      // (the game's server already watches the public folder. Do not add it again here: that made brand-new files
+      //  come through as a blank web page until the server was restarted.)
+      const refresh = (file: string) => {
+        if (!file.split('\\').join('/').includes('public/assets/')) return;
+        const m = server.moduleGraph.getModuleById('\0' + id);
+        if (m) server.moduleGraph.invalidateModule(m);
+        server.ws.send({ type: 'full-reload' });
+      };
+      server.watcher.on('add', refresh);
+      server.watcher.on('unlink', refresh);
+    },
     load: (x: string) => {
       if (x !== '\0' + id) return null;
       const out: Record<string, string[]> = {};

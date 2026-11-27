@@ -1,0 +1,71 @@
+{
+  "id": "s05_trail_run",
+  "title": "The wolf on the trail",
+  "interaction_style": "watch",
+  "objects": [],
+  "mechanic": "trail_run",
+  "params": {
+    "map": "map_forest_broken",
+    "height": 130,
+    "zoom": 1,
+
+    "speed": 160,
+    "steps_per_second": 7,
+    "route": [
+      [12, 2105], [50, 2090], [90, 2060], [100, 2020], [140, 1985], [200, 1960], [260, 1950], [320, 1940], [372, 1924]
+    ],
+
+    "stop_picture": "spr_reign_surprised",
+    "stop_dialog": [
+      {
+        "speaker": "unknown",
+        "portrait": "unknown_face",
+        "audio": "s05_howl_far",
+        "text": "Awwwoohhhhhhhh"
+      },
+      {
+        "speaker": "dad",
+        "portrait": "dad_face_worried",
+        "audio": "s05_d1",
+        "text": "Uh oh. Reign, what was that?"
+      },
+      {
+        "speaker": "wolf",
+        "portrait": "wolf_howl_face",
+        "audio": "s05_howl",
+        "text": "AWWWWOHHHHHHHHHHH!"
+      },
+      {
+        "speaker": "dad",
+        "portrait": "dad_face_shocked",
+        "audio": "s05_d2",
+        "text": "Reign! It's a wolf! Run!"
+      }
+    ],
+
+    "escape": {
+      "speed": 200,
+      "steps_per_second": 10,
+      "route": [
+        [372, 1924], [400, 1900], [394, 1870], [370, 1845], [346, 1820], [352, 1790], [382, 1760], [422, 1736], [476, 1723]
+      ]
+    },
+
+    "chaser": {
+      "picture": "spr_wolf",
+      "size": 170,
+      "delay": 500,
+      "speed": 240,
+      "steps_per_second": 9,
+      "route": [
+        [12, 2105], [50, 2090], [90, 2060], [100, 2020], [140, 1985], [200, 1960], [260, 1950], [320, 1940], [372, 1924],
+        [400, 1900], [394, 1870], [370, 1845], [346, 1820], [352, 1792]
+      ]
+    },
+
+    "end_pause": 0
+  },
+  "dialog": [],
+  "fade_out_ms": 200,
+  "next": null
+}

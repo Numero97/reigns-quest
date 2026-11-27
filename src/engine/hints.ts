@@ -71,7 +71,8 @@ export class IdleReplay {
 }
 
 /** A soft ring where she tapped empty floor: gentle "not there", never scolding. */
-export function softRipple(scene: Phaser.Scene, x: number, y: number) {
+export function softRipple(scene: Phaser.Scene, x: number, y: number, sound = 'sfx_mouse_click') {
+  engine.sfx(sound);
   const ring = scene.add.circle(x, y, 14, 0xffffff, 0).setStrokeStyle(5, 0xffffff, 0.8).setDepth(40);
   scene.tweens.add({ targets: ring, scale: 3, alpha: 0, duration: 500, onComplete: () => ring.destroy() });
 }

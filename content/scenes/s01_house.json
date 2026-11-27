@@ -5,11 +5,12 @@
   "interaction_style": "point_and_click",
   "start_state": "reign_in_bed",
   "objects": [
-    { "sprite": "spr_reign", "x": 120, "y": 700, "height": 330, "anchor": "bottom" }
+    { "sprite": "spr_reign", "x": 200, "y": 550, "height": 300, "anchor": "bottom" }
   ],
   "mechanic": "follow_trail",
   "params": {
     "count": 5,
+    "auto_complete": false,
     "reveal": "sequential",
     "show_numeral_on_tap": true,
     "speak_count_on_tap": true,
@@ -28,7 +29,7 @@
     { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d2", "text": "I'm glad you're awake. Betsy has gone missing!" },
     { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d3", "text": "Mom and Lyra are already looking for her." },
     { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d4", "text": "Can you help me find some clues to where she might have gone?" },
-    { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d5", "text": "I'm sure she left some paw prints around here somewhere. Can you find five paw prints?" }
+    { "speaker": "dad", "portrait": "dad_face", "audio": "s01_d5", "text": "I'm sure she left some paw prints around here somewhere. Can you find 5 paw prints?" }
   ],
   "dialog_advance": "auto_after_audio",
   "prompt_audio": "s01_prompt_find_prints",

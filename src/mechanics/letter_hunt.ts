@@ -1,3 +1,4 @@
+import { showTrailPrints, showExit as showExitShared } from '../engine/exit';
 import Phaser from 'phaser';
 import type { Mechanic } from './index';
 import { engine } from '../engine/engine';
@@ -16,7 +17,8 @@ export const letterHunt: Mechanic = {
   assets: d => [
     ...(d.params?.items ?? d.params?.logs ?? []).map((l: any) => l.sprite),
     ...(d.params?.stack?.sprites ?? []),
-    ...(d.params?.trail_prints ?? []).map((p: any) => p.sprite)
+    ...(d.params?.trail_prints ?? []).map((p: any) => p.sprite),
+    ...(d.params?.exit?.glow_frames ?? [])
   ],
 
   audio: d => [
@@ -25,7 +27,7 @@ export const letterHunt: Mechanic = {
   ].filter(Boolean),
 
   start({ scene, data, params, ready, complete }) {
-    const spots: { sprite: string; x: number; y: number; flip?: boolean; scale?: number; letter_dx?: number; letter_dy?: number }[] = params.items ?? params.logs ?? [];
+    const spots: { sprite: string; x: number; y: number; flip?: boolean; scale?: number; rotate?: number; letter_dx?: number; letter_dy?: number }[] = params.items ?? params.logs ?? [];
     const glowEffect = params.found_effect === 'glow';
     const pool: string[] = params.letter_pool ?? ALPHABET.slice(0, 10);
     const findAudio: string[] = params.find_audio ?? [];          // e.g. ["s02_find_log"] then the letter's name
@@ -58,21 +60,32 @@ export const letterHunt: Mechanic = {
       if (sp.flip && img instanceof Phaser.GameObjects.Image) img.setFlipX(true);
       const sizeUp = sp.scale ?? params.item_scale ?? 1;   // make this one bigger (2) or smaller (0.5); its letter circle grows or shrinks with it
       if (img instanceof Phaser.GameObjects.Image) img.setScale(img.scaleX * sizeUp, img.scaleY * sizeUp);
-      const w = img instanceof Phaser.GameObjects.Image ? img.displayWidth : 230;
-      const h = img instanceof Phaser.GameObjects.Image ? img.displayHeight : 120;
+      const turn = sp.rotate ?? 0;   // degrees, clockwise; the letter stays upright and moves with the snake
+      if (turn) (img as any).setAngle(turn);
+      const rad = Phaser.Math.DegToRad(turn), cos = Math.cos(rad), sin = Math.sin(rad);
+      const iw = img instanceof Phaser.GameObjects.Image ? img.displayWidth : 230;
+      const ih = img instanceof Phaser.GameObjects.Image ? img.displayHeight : 120;
+      const w = Math.abs(iw * cos) + Math.abs(ih * sin);   // tap area = box around the turned picture
+      const h = Math.abs(iw * sin) + Math.abs(ih * cos);
+      const ox = ((sp.letter_dx ?? 0) * cos - (sp.letter_dy ?? 0) * sin) * sizeUp;   // letter spot, turned with the snake
+      const oy = ((sp.letter_dx ?? 0) * sin + (sp.letter_dy ?? 0) * cos) * sizeUp;
       const parts: Phaser.GameObjects.GameObject[] = [img];
+      const letterParts: Phaser.GameObjects.GameObject[] = [];   // hidden until the opening speech is over
       if (params.letter_badge) {   // a soft cream disc so the letter reads on busy pictures
-        parts.push(scene.add.circle((sp.letter_dx ?? 0) * sizeUp, (sp.letter_dy ?? 0) * sizeUp + 2, 50 * sizeUp, 0xfff3c9, 0.88).setStrokeStyle(Math.max(2, 5 * sizeUp), 0x3d220f));
+        parts.push(scene.add.circle(ox, oy + 2, 50 * sizeUp, 0xfff3c9, 0.88).setStrokeStyle(Math.max(2, 5 * sizeUp), 0x3d220f));
+        letterParts.push(parts[parts.length - 1]);
       }
-      const text = scene.add.text((sp.letter_dx ?? 0) * sizeUp, (sp.letter_dy ?? 0) * sizeUp + 2, letters[i], {
+      const text = scene.add.text(ox, oy + 2, letters[i], {
         fontSize: `${Math.round(84 * sizeUp)}px`, fontStyle: 'bold', fontFamily: 'Andika, sans-serif',
         color: params.letter_badge ? '#3d220f' : '#fff3c9', stroke: '#3d220f', strokeThickness: params.letter_badge ? 0 : 14
       }).setOrigin(0.5);
       parts.push(text);
+      letterParts.push(text);
+      letterParts.forEach(o => (o as any).setAlpha(0));
       const go = scene.add.container(sp.x, sp.y, parts).setSize(w, Math.max(h, 110)).setDepth(10 + i).setAlpha(0);
       go.setInteractive({ useHandCursor: true });
       go.on('pointerdown', () => tap(i));
-      return { go, img, letter: letters[i], found: false };
+      return { go, img, letter: letters[i], found: false, letterParts };
     });
 
     /** Makes a found object glow yellow (and keep glowing). */
@@ -88,7 +101,10 @@ export const letterHunt: Mechanic = {
       } else if (L.img instanceof Phaser.GameObjects.Image) L.img.setTint(0xffffaa);
     };
 
-    const promptFor = (i: number) => [...findAudio, letterName(logs[i].letter)];
+    // "learning": "names" says the letter's name ("B!"); "sounds" says its sound ("Bbbb sound"), falling back to the name until that is recorded
+    const sounds = params.learning === 'sounds';
+    const say = (letter: string) => (sounds && engine.hasAudio(letterSound(letter)) ? letterSound(letter) : letterName(letter));
+    const promptFor = (i: number) => [...findAudio, say(logs[i].letter)];
     const askNext = async () => {
       engine.setPrompt(promptFor(target()));
       engine.lockInput(false);
@@ -118,9 +134,10 @@ export const letterHunt: Mechanic = {
       if (i !== target()) {                       // a different letter: name it, then repeat what to find
         recordLetter(L.letter, false);
         recordLetter(letters[target()], false);
+        engine.sfx('sfx_try_again');
         scene.tweens.add({ targets: L.go, angle: { from: -4, to: 4 }, duration: 90, yoyo: true, repeat: 2, onComplete: () => L.go.setAngle(0) });
         await engine.play(params.thats_audio);
-        await engine.play(letterName(L.letter));
+        await engine.play(say(L.letter));
         await askNext();
         ladder.miss();
         return;
@@ -139,8 +156,7 @@ export const letterHunt: Mechanic = {
         targets: L.go, x: params.stack.x, y: params.stack.y - 30, scale: 0.35, alpha: 0.2, duration: 750, delay: 250, ease: 'Sine.easeIn',
         onComplete: () => { L.go.destroy(); showStack(found); }
       });
-      await engine.play(letterName(L.letter));
-      if (!isKnown(L.letter)) await engine.play(letterSound(L.letter));   // new letter: say its sound too
+      await engine.play(say(L.letter));
 
       asked++;
       if (asked < queue.length) {
@@ -148,15 +164,9 @@ export const letterHunt: Mechanic = {
         if (line) await runDialog(scene, [line]);
         await askNext();
       } else {
+        await (scene as any).celebrate?.();   // she jumps for joy: the puzzle is solved
         // all logs picked up: thank her and show the trail leading into the forest
-        const trail: { sprite: string; x: number; y: number; scale?: number; angle?: number }[] = params.trail_prints ?? [];
-        trail.forEach((p, k) => scene.time.delayedCall(500 + k * 450, () => {
-          const img = makeImage(scene, p.sprite, p.x, p.y, 40, 40);
-          if (img instanceof Phaser.GameObjects.Image) img.setDisplaySize(img.width * 68 * (p.scale ?? 1) / img.height, 68 * (p.scale ?? 1));
-          (img as any).setAngle(p.angle ?? 0).setDepth(4).setAlpha(0);
-          scene.tweens.add({ targets: img, alpha: 0.95, duration: 400 });
-          sparkle(scene, p.x, p.y);
-        }));
+        showTrailPrints(scene, params.trail_prints ?? []);
         const closing: DialogLine[] = ([] as DialogLine[]).concat(data.all_found_dialog ?? []);   // one line or a list
         if (closing.length) await runDialog(scene, closing);
         await showExit();
@@ -164,27 +174,7 @@ export const letterHunt: Mechanic = {
     };
 
     // ---- the glowing "exit" (e.g. the trail): she taps it to go on ----
-    const showExit = async () => {
-      const ex = params.exit as { x: number; y: number; w: number; h: number; prompt_audio?: string } | undefined;
-      if (!ex) { await new Promise<void>(r => scene.time.delayedCall(1200, () => r())); complete(); return; }
-      const glow = scene.add.container(ex.x, ex.y).setDepth(7).setAlpha(0);
-      const g = scene.add.graphics();
-      for (let k = 6; k >= 1; k--) g.fillStyle(0xfff27a, 0.09).fillEllipse(0, 0, ex.w * (0.5 + k * 0.1), ex.h * (0.5 + k * 0.1));
-      glow.add(g);
-      scene.tweens.add({ targets: glow, alpha: 1, duration: 600 });
-      scene.tweens.add({ targets: glow, scale: 1.1, duration: 800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut', delay: 600 });
-      const zone = scene.add.zone(ex.x, ex.y, ex.w + 40, ex.h + 40).setInteractive({ useHandCursor: true }).setDepth(30);
-      zone.on('pointerdown', () => {
-        if (engine.locked) return;
-        zone.disableInteractive();
-        engine.lockInput(true);
-        sparkle(scene, ex.x, ex.y);
-        scene.time.delayedCall(500, () => complete());
-      });
-      engine.setPrompt(ex.prompt_audio ?? null);
-      engine.lockInput(false);
-      await engine.replayPrompt();
-    };
+    const showExit = () => showExitShared(scene, params.exit, complete);
 
     // ---- taps on empty ground just make a soft ring ----
     scene.input.on('pointerdown', (p: Phaser.Input.Pointer, over: unknown[]) => {
@@ -194,12 +184,15 @@ export const letterHunt: Mechanic = {
       softRipple(scene, p.worldX, p.worldY);
     });
 
+    // the pictures appear right away, while Dad is still talking...
+    logs.forEach((L, i) => {
+      L.go.setScale(0.6);
+      scene.tweens.add({ targets: L.go, alpha: 1, scale: 1, duration: 400, delay: i * 180, ease: 'Back.easeOut' });
+    });
+    // ...and the letters fade in once he has finished
     ready.then(async () => {
-      logs.forEach((L, i) => {
-        L.go.setScale(0.6);
-        scene.tweens.add({ targets: L.go, alpha: 1, scale: 1, duration: 400, delay: i * 180, ease: 'Back.easeOut' });
-      });
-      await new Promise<void>(r => scene.time.delayedCall(logs.length * 180 + 500, () => r()));
+      logs.forEach(L => scene.tweens.add({ targets: L.letterParts, alpha: 1, duration: 500 }));
+      await new Promise<void>(r => scene.time.delayedCall(700, () => r()));
       await askNext();
     });
   }

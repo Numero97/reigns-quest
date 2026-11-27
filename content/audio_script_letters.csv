@@ -1,53 +1,53 @@
 id,scene,text,notes
 letter_a_name,global,A!,Say the letter NAME: 'A'.
-letter_a_sound,global,"/a/, like apple","The pure sound of A (no 'uh'), then the word. Played once when she finds a new letter."
+letter_a_sound,global,Aah sound,"A: Aah (apple). The real sound A makes, as in apple (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_b_name,global,B!,Say the letter NAME: 'B'.
-letter_b_sound,global,"/b/, like ball","The pure sound of B (no 'uh'), then the word. Played once when she finds a new letter."
+letter_b_sound,global,Buh sound,"B: Buh (ball). The real sound B makes, as in ball (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_c_name,global,C!,Say the letter NAME: 'C'.
-letter_c_sound,global,"/c/, like cat","The pure sound of C (no 'uh'), then the word. Played once when she finds a new letter."
+letter_c_sound,global,Kuh sound,"C: Kuh (cat). The real sound C makes, as in cat (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_d_name,global,D!,Say the letter NAME: 'D'.
-letter_d_sound,global,"/d/, like dog","The pure sound of D (no 'uh'), then the word. Played once when she finds a new letter."
+letter_d_sound,global,Duh sound,"D: Duh (dog). The real sound D makes, as in dog (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_e_name,global,E!,Say the letter NAME: 'E'.
-letter_e_sound,global,"/e/, like egg","The pure sound of E (no 'uh'), then the word. Played once when she finds a new letter."
+letter_e_sound,global,Eh sound,"E: Eh (egg). The real sound E makes, as in egg (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_f_name,global,F!,Say the letter NAME: 'F'.
-letter_f_sound,global,"/f/, like fish","The pure sound of F (no 'uh'), then the word. Played once when she finds a new letter."
+letter_f_sound,global,Fff sound,"F: Fff (fish). The real sound F makes, as in fish (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_g_name,global,G!,Say the letter NAME: 'G'.
-letter_g_sound,global,"/g/, like goat","The pure sound of G (no 'uh'), then the word. Played once when she finds a new letter."
+letter_g_sound,global,Guh sound,"G: Guh (goat). The real sound G makes, as in goat (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_h_name,global,H!,Say the letter NAME: 'H'.
-letter_h_sound,global,"/h/, like hat","The pure sound of H (no 'uh'), then the word. Played once when she finds a new letter."
+letter_h_sound,global,Hhh sound,"H: Hhh (hat). The real sound H makes, as in hat (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_i_name,global,I!,Say the letter NAME: 'I'.
-letter_i_sound,global,"/i/, like igloo","The pure sound of I (no 'uh'), then the word. Played once when she finds a new letter."
+letter_i_sound,global,Ih sound,"I: Ih (igloo). The real sound I makes, as in igloo (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_j_name,global,J!,Say the letter NAME: 'J'.
-letter_j_sound,global,"/j/, like jump","The pure sound of J (no 'uh'), then the word. Played once when she finds a new letter."
+letter_j_sound,global,Juh sound,"J: Juh (jam). The real sound J makes, as in jam (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_k_name,global,K!,Say the letter NAME: 'K'.
-letter_k_sound,global,"/k/, like kitten","The pure sound of K (no 'uh'), then the word. Played once when she finds a new letter."
+letter_k_sound,global,Kuh sound,"K: Kuh (kite). The real sound K makes, as in kite (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_l_name,global,L!,Say the letter NAME: 'L'.
-letter_l_sound,global,"/l/, like lion","The pure sound of L (no 'uh'), then the word. Played once when she finds a new letter."
+letter_l_sound,global,Lll sound,"L: Lll (lion). The real sound L makes, as in lion (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_m_name,global,M!,Say the letter NAME: 'M'.
-letter_m_sound,global,"/m/, like moon","The pure sound of M (no 'uh'), then the word. Played once when she finds a new letter."
+letter_m_sound,global,Mmm sound,"M: Mmm (moon). The real sound M makes, as in moon (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_n_name,global,N!,Say the letter NAME: 'N'.
-letter_n_sound,global,"/n/, like nest","The pure sound of N (no 'uh'), then the word. Played once when she finds a new letter."
+letter_n_sound,global,Nnn sound,"N: Nnn (nest). The real sound N makes, as in nest (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_o_name,global,O!,Say the letter NAME: 'O'.
-letter_o_sound,global,"/o/, like octopus","The pure sound of O (no 'uh'), then the word. Played once when she finds a new letter."
+letter_o_sound,global,Ah sound,"O: Ah (octopus). The real sound O makes, as in octopus (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_p_name,global,P!,Say the letter NAME: 'P'.
-letter_p_sound,global,"/p/, like pig","The pure sound of P (no 'uh'), then the word. Played once when she finds a new letter."
+letter_p_sound,global,Puh sound,"P: Puh (pig). The real sound P makes, as in pig (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_q_name,global,Q!,Say the letter NAME: 'Q'.
-letter_q_sound,global,"/q/, like queen","The pure sound of Q (no 'uh'), then the word. Played once when she finds a new letter."
+letter_q_sound,global,Kwuh sound,"Q: Kwuh (queen). The real sound Q makes, as in queen (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_r_name,global,R!,Say the letter NAME: 'R'.
-letter_r_sound,global,"/r/, like rabbit","The pure sound of R (no 'uh'), then the word. Played once when she finds a new letter."
+letter_r_sound,global,Rrr sound,"R: Rrr (rabbit). The real sound R makes, as in rabbit (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_s_name,global,S!,Say the letter NAME: 'S'.
-letter_s_sound,global,"/s/, like sun","The pure sound of S (no 'uh'), then the word. Played once when she finds a new letter."
+letter_s_sound,global,Sss sound,"S: Sss (sun). The real sound S makes, as in sun (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_t_name,global,T!,Say the letter NAME: 'T'.
-letter_t_sound,global,"/t/, like turtle","The pure sound of T (no 'uh'), then the word. Played once when she finds a new letter."
+letter_t_sound,global,Tuh sound,"T: Tuh (turtle). The real sound T makes, as in turtle (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_u_name,global,U!,Say the letter NAME: 'U'.
-letter_u_sound,global,"/u/, like umbrella","The pure sound of U (no 'uh'), then the word. Played once when she finds a new letter."
+letter_u_sound,global,Uh sound,"U: Uh (umbrella). The real sound U makes, as in umbrella (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_v_name,global,V!,Say the letter NAME: 'V'.
-letter_v_sound,global,"/v/, like van","The pure sound of V (no 'uh'), then the word. Played once when she finds a new letter."
+letter_v_sound,global,Vvv sound,"V: Vvv (van). The real sound V makes, as in van (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_w_name,global,W!,Say the letter NAME: 'W'.
-letter_w_sound,global,"/w/, like whale","The pure sound of W (no 'uh'), then the word. Played once when she finds a new letter."
+letter_w_sound,global,Wuh sound,"W: Wuh (watch). The real sound W makes, as in watch (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_x_name,global,X!,Say the letter NAME: 'X'.
-letter_x_sound,global,"/x/, like box","The pure sound of X (no 'uh'), then the word. Played once when she finds a new letter."
+letter_x_sound,global,Ks sound,"X: Ks (box). The real sound X makes, as in box (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_y_name,global,Y!,Say the letter NAME: 'Y'.
-letter_y_sound,global,"/y/, like yo-yo","The pure sound of Y (no 'uh'), then the word. Played once when she finds a new letter."
+letter_y_sound,global,Yuh sound,"Y: Yuh (yo-yo). The real sound Y makes, as in yo-yo (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."
 letter_z_name,global,Z!,Say the letter NAME: 'Z'.
-letter_z_sound,global,"/z/, like zebra","The pure sound of Z (no 'uh'), then the word. Played once when she finds a new letter."
+letter_z_sound,global,Zzz sound,"Z: Zzz (zebra). The real sound Z makes, as in zebra (not the letter name). Keep any 'uh' very short, then say 'sound'. Used in sound scenes for the question, a miss and the right answer."

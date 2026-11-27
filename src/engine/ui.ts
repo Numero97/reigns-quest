@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { engine } from './engine';
 
 /** Draws an image if it exists; otherwise a coloured box labelled with its id (placeholder). */
 export function makeImage(scene: Phaser.Scene, key: string, x: number, y: number, w = 200, h = 200): Phaser.GameObjects.Container | Phaser.GameObjects.Image {
@@ -31,7 +32,8 @@ export function bouncingPaw(scene: Phaser.Scene) {
   return c;
 }
 
-export function sparkle(scene: Phaser.Scene, x: number, y: number) {
+export function sparkle(scene: Phaser.Scene, x: number, y: number, quiet = false) {
+  if (!quiet) engine.sfx('sfx_success');   // the happy sparkle sound goes with every sparkle
   for (let i = 0; i < 10; i++) {
     const star = scene.add.star(x, y, 5, 5, 12, 0xffd54a).setDepth(50);
     const a = (i / 10) * Math.PI * 2, d = 60 + Math.random() * 50;

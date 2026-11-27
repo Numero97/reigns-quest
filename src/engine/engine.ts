@@ -43,6 +43,13 @@ class Engine {
     });
   }
 
+  /** Loads the three little sound effects (click, happy sparkle, soft try-again) if the files exist. */
+  loadSfx(loader: Phaser.Loader.LoaderPlugin, cache: Phaser.Cache.CacheManager, existing: string[]) {   // call after the loader's path is set to 'assets'
+    for (const id of ['sfx_mouse_click', 'sfx_success', 'sfx_try_again']) {
+      if (existing.includes(id) && !cache.audio.exists(id)) loader.audio(id, `audio/${id}.m4a`);
+    }
+  }
+
   hasAudio(id: string) { return this.game.cache.audio.exists(id); }
 
   /** A short sound effect that is not a voice line (nothing plays until real files exist). */

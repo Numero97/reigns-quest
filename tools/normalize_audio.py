@@ -18,6 +18,8 @@ EXTS = {".m4a", ".wav", ".mp3", ".aac", ".caf", ".ogg", ".flac"}
 
 TRIM = "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05"
 FILTER = f"{TRIM},areverse,{TRIM},areverse,loudnorm=I=-16:TP=-1.5:LRA=11,apad=pad_dur=0.05"
+# sound effects (files named sfx_*) are kept quieter than Dad's voice so they never drown him out
+SFX_FILTER = f"{TRIM},areverse,{TRIM},areverse,loudnorm=I=-24:TP=-2:LRA=11,apad=pad_dur=0.05"
 
 
 def main():
@@ -31,7 +33,7 @@ def main():
         if dst.exists() and dst.stat().st_mtime >= src.stat().st_mtime:
             print("up to date:", dst.name)
             continue
-        cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-af", FILTER,
+        cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-af", SFX_FILTER if src.stem.startswith("sfx_") else FILTER,
                "-ar", "44100", "-c:a", "aac", "-b:a", "128k", str(dst)]
         r = subprocess.run(cmd)
         print(("done:       " if r.returncode == 0 else "FAILED:     ") + dst.name)

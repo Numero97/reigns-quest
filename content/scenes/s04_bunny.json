@@ -1,0 +1,100 @@
+{
+  "id": "s04_bunny",
+  "title": "The sad bunny",
+  "background": "bg_forest_thicket",
+  "interaction_style": "point_and_click",
+  "objects": [
+    { "sprite": "spr_veg_beet",     "x": 130, "y": 535, "height": 100, "rotate": -25, "depth": 1 },
+    { "sprite": "spr_veg_broccoli", "x": 480, "y": 540, "height": 105, "rotate": 15,  "depth": 1 },
+    { "sprite": "spr_veg_carrot",   "x": 930, "y": 590, "height": 115, "rotate": 70,  "depth": 1 },
+    { "sprite": "spr_veg_pumpkin",  "x": 585, "y": 735, "height": 110, "depth": 1 },
+    { "sprite": "spr_veg_squash",   "x": 855, "y": 535, "height": 115, "rotate": -50, "depth": 1 },
+    { "sprite": "spr_veg_zucchini", "x": 300, "y": 738, "height": 115, "rotate": 80,  "depth": 1 },
+    { "sprite": "spr_reign_surprised", "x": 330, "y": 560, "height": 380, "anchor": "bottom" },
+    { "sprite": "spr_bunny_sad",       "x": 690, "y": 560, "height": 380, "anchor": "bottom" }
+  ],
+  "mechanic": "match_game",
+  "params": {
+    "card_back": "spr_card_back",
+    "pairs": [
+      { "sprite": "spr_veg_beet",     "audio": "s04_veg_beet" },
+      { "sprite": "spr_veg_broccoli", "audio": "s04_veg_broccoli" },
+      { "sprite": "spr_veg_carrot",   "audio": "s04_veg_carrot" },
+      { "sprite": "spr_veg_pumpkin",  "audio": "s04_veg_pumpkin" },
+      { "sprite": "spr_veg_squash",   "audio": "s04_veg_squash" },
+      { "sprite": "spr_veg_zucchini", "audio": "s04_veg_zucchini" }
+    ],
+    "panel": { "x": 184, "y": 134, "w": 656, "h": 500 },
+    "columns": 4,
+    "card": 140,
+    "gap": 16,
+    "mismatch_delay": 1200,
+    "flip_ms": 400,
+    "swap": { "spr_reign_surprised": "spr_reign", "spr_bunny_sad": "spr_bunny_empty_basket" },
+    "trail_prints": [
+      { "sprite": "spr_pawprint", "x": 780, "y": 600, "scale": 0.9,  "angle": 40 },
+      { "sprite": "spr_pawprint", "x": 850, "y": 530, "scale": 0.75, "angle": 45 },
+      { "sprite": "spr_pawprint", "x": 905, "y": 470, "scale": 0.62, "angle": 40 },
+      { "sprite": "spr_pawprint", "x": 950, "y": 420, "scale": 0.5,  "angle": 40 }
+    ],
+    "exit": {
+      "x": 965, "y": 390, "w": 150, "h": 190,
+      "glow_frames": ["spr_trail_pulse_1", "spr_trail_pulse_2", "spr_trail_pulse_3", "spr_trail_pulse_4"],
+      "glow_scale": 0.7, "glow_opacity": 0.75
+    },
+    "side_positions": {
+      "spr_reign_surprised": { "x": 92,  "y": 650, "height": 300 },
+      "spr_bunny_sad":       { "x": 932, "y": 650, "height": 300 }
+    }
+  },
+  "dialog": [
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s04_d1",
+      "text": "Reign, this bunny looks sad, we should see what happened!"
+    },
+    {
+      "speaker": "bunny",
+      "portrait": "bunny_sad_face",
+      "audio": "s04_bunny",
+      "text": "A crazy cat bumped into me and I lost all of my vegetables. Can you help me find them all?"
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s04_d2",
+      "text": "We can help this bunny find their vegetables, right, Reign?!"
+    }
+  ],
+  "all_found_dialog": [
+    {
+      "speaker": "bunny",
+      "portrait": "bunny_happy_face",
+      "audio": "s04_thanks",
+      "text": "Oh, thank you, Reign! How can I ever repay you?",
+      "swap": { "spr_bunny_sad": "spr_bunny_full_basket" },
+      "hide": ["spr_veg_beet", "spr_veg_broccoli", "spr_veg_carrot", "spr_veg_pumpkin", "spr_veg_squash", "spr_veg_zucchini"]
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s04_d3",
+      "text": "You said a cat bumped into you earlier? Do you know which way she went?"
+    },
+    {
+      "speaker": "bunny",
+      "portrait": "bunny_happy_face",
+      "audio": "s04_which_way",
+      "text": "She went racing down the trail."
+    },
+    {
+      "speaker": "dad",
+      "portrait": "dad_face",
+      "audio": "s04_d4",
+      "text": "Ok, let's go find Betsy, Reign!"
+    }
+  ],
+  "dialog_advance": "auto_after_audio",
+  "next": null
+}

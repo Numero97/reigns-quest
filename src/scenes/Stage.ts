@@ -18,11 +18,17 @@ export class Stage extends Phaser.Scene {
 
   init(args: { sceneId: string }) {
     this.data_ = scenes[args.sceneId];
+    this.placed.clear();   // forget the pictures of the previous scene (they were destroyed with it)
     engine.lockInput(true);
   }
 
   /** A dialog line can say "swap": { "spr_reign": "spr_reign_surprised" } to change a picture on screen. */
   applySwap = (line: DialogLine) => {
+    // "hide": ["spr_veg_beet", ...] fades those pictures away
+    for (const id of line.hide ?? []) {
+      const img = this.placed.get(id);
+      if (img) this.tweens.add({ targets: img, alpha: 0, duration: 600 });
+    }
     for (const [from, to] of Object.entries(line.swap ?? {})) {
       const img = this.placed.get(from);
       if (!img || !this.textures.exists(to)) continue;
@@ -30,6 +36,22 @@ export class Stage extends Phaser.Scene {
       img.setTexture(to).setDisplaySize(img.width * k, img.height * k);
     }
   };
+
+  /** Reign jumps for joy: swaps to her excited picture, bounces up and down smoothly for about a second, then goes back. */
+  celebrate = (): Promise<void> => new Promise(resolve => {
+    const img = this.placed.get('spr_reign') ?? this.placed.get('spr_reign_surprised');
+    if (!img || !this.textures.exists('spr_reign_excited')) { resolve(); return; }
+    const before = { key: img.texture.key, w: img.displayWidth, h: img.displayHeight, y: img.y };
+    const k = img.displayHeight / img.height;   // keep the same on-screen size
+    img.setTexture('spr_reign_excited').setDisplaySize(img.width * k, img.height * k);
+    this.tweens.add({
+      targets: img, y: before.y - 60, duration: 250, ease: 'Sine.easeInOut', yoyo: true, repeat: 1,   // two smooth bounces = 1 second
+      onComplete: () => { img.y = before.y; img.setTexture(before.key).setDisplaySize(before.w, before.h); resolve(); }
+    });
+  });
+
+  /** Lets a mechanic move a character that the scene file placed. */
+  getPlaced(id: string) { return this.placed.get(id); }
 
   private dialogLines(): DialogLine[] { return (this.data_.dialog as DialogLine[] | undefined) ?? []; }
 
@@ -51,6 +73,9 @@ export class Stage extends Phaser.Scene {
     const audio = new Set<string>([...collectAudioIds(d), ...(mechanic.audio?.(d) ?? [])]);
     if (d.background && have.backgrounds.includes(d.background) && !this.textures.exists(d.background)) this.load.image(d.background, `backgrounds/${d.background}.png`);
     sprites.forEach(s => { if (have.sprites.includes(s) && !this.textures.exists(s)) this.load.image(s, `sprites/${s}.png`); });
+    engine.loadSfx(this.load, this.cache, have.audio);
+    mechanic.preload?.(this, d);
+    if (have.sprites.includes('spr_reign_excited') && !this.textures.exists('spr_reign_excited')) this.load.image('spr_reign_excited', 'sprites/spr_reign_excited.png');
     audio.forEach(id => { if (have.audio.includes(id) && !this.cache.audio.exists(id)) this.load.audio(id, `audio/${id}.m4a`); });
   }
 
@@ -64,12 +89,14 @@ export class Stage extends Phaser.Scene {
       if (img instanceof Phaser.GameObjects.Image) {
         if (o.height) img.setDisplaySize(img.width * o.height / img.height, o.height);
         if (o.anchor === 'bottom') img.setOrigin(0.5, 1);
+        if (o.flip) img.setFlipX(true);
+        if (o.rotate) img.setAngle(o.rotate);
       }
       img.setDepth(o.depth ?? 2);
       if (img instanceof Phaser.GameObjects.Image) this.placed.set(o.sprite, img);
     }
 
-    this.cameras.main.fadeIn(600);
+    this.cameras.main.fadeIn(d.fade_in_ms ?? 600);   // "fade_in_ms" / "fade_out_ms" in a scene file: how fast it appears / leaves
     const mechanic = mechanics[d.mechanic] ?? fallback;
     engine.setPrompt(d.prompt_audio ?? d.params?.prompt_audio ?? null);
 
@@ -103,10 +130,12 @@ export class Stage extends Phaser.Scene {
       cam.setZoom(1).centerOn(512, 384);
       cam.fadeIn(350);
     }
-    const sd = d.success_dialog as DialogLine | undefined;
-    if (sd) await runDialog(this, [{ ...sd, audio: sd.audio ?? d.success_audio }], this.applySwap);
+    const sd = d.success_dialog as DialogLine | DialogLine[] | undefined;
+    if (Array.isArray(sd)) await runDialog(this, sd, this.applySwap);   // several lines in a row
+    else if (sd) await runDialog(this, [{ ...sd, audio: sd.audio ?? d.success_audio }], this.applySwap);
     else await engine.play(d.success_audio);
-    this.cameras.main.fadeOut(600);
-    this.time.delayedCall(650, () => engine.finishScene(d.id));
+    const fade: number = d.fade_out_ms ?? 600;
+    this.cameras.main.fadeOut(fade);
+    this.time.delayedCall(fade + 50, () => engine.finishScene(d.id));
   }
 }

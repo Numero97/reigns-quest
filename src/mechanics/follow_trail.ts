@@ -108,7 +108,7 @@ export const followTrail: Mechanic = {
         pulseTween?.remove();
         pulseTween = scene.tweens.add({ targets: t, scale: (t.scale ?? 1) * 1.35, duration: 280, yoyo: true, repeat: 5 });
       },
-      autoComplete: () => {
+      autoComplete: params.auto_complete === false ? undefined : () => {   // "auto_complete": false = never tap it for her
         if (phase === 'prints') scene.time.delayedCall(1200, () => tapPrint(next, true));
         else if (phase === 'final') scene.time.delayedCall(1200, () => tapWindow());
       }
@@ -120,7 +120,7 @@ export const followTrail: Mechanic = {
       const it = items[i];
       if (it.found) return;
       if (i !== next) {                       // a print out of order (only possible when all are showing)
-        softRipple(scene, it.go.x, it.go.y);
+        softRipple(scene, it.go.x, it.go.y, 'sfx_try_again');
         await engine.play(`number_${i + 1}`);   // always say what she tapped
         engine.replayPrompt();
         ladder.miss();
@@ -143,6 +143,7 @@ export const followTrail: Mechanic = {
       } else {
         phase = 'final';
         engine.lockInput(true);
+        await (scene as any).celebrate?.();                // she jumps for joy: all the prints are found
         if (final) {
           engine.setPrompt(data.window_prompt_audio ?? null);
           showWindow();                                   // the window starts to glow...

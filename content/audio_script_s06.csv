@@ -1,0 +1,13 @@
+id,scene,text,notes
+s06_d1,s06_bridge,What are we going to do? The wolf will get us if we can't get across this river!,Worried but not frightening.
+s06_beaver,s06_bridge,"My family and I were going to fix this bridge. If you help us, we can build it faster.",A cheerful beaver voice.
+s06_d2,s06_bridge,"Perfect! Reign, let's help the beavers find the right wood for the bridge!",Excited and hopeful.
+s06_select,s06_bridge,Select the log with the number,"The game adds the number right after this, so end as if the sentence keeps going."
+s06_wood,s06_bridge,That's all the wood we need. We'll be able to get the bridge fixed now.,A cheerful beaver voice.
+s06_thanks,s06_bridge,"Thanks for all your help, Reign!",A cheerful beaver voice.
+s06_d3,s06_bridge,"Great work, Reign! Now we've got to hurry and find Betsy before the wolf catches us!",Proud and excited.
+number_6,global,"Six!",Reused in every scene. Record each number once.
+number_7,global,"Seven!",Reused in every scene. Record each number once.
+number_8,global,"Eight!",Reused in every scene. Record each number once.
+number_9,global,"Nine!",Reused in every scene. Record each number once.
+number_10,global,"Ten!",Reused in every scene. Record each number once.

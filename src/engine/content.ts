@@ -8,7 +8,7 @@ export interface SceneData {
   intro_audio?: string;
   mechanic: string;
   params?: Record<string, any>;
-  objects?: { sprite: string; x: number; y: number; height?: number; anchor?: string; depth?: number }[];
+  objects?: { sprite: string; x: number; y: number; height?: number; anchor?: string; depth?: number; flip?: boolean; rotate?: number }[];
   success_audio?: string;
   next?: string | null;
   [key: string]: any;

@@ -39,6 +39,7 @@ export class Overlay extends Phaser.Scene {
     this.ear.setInteractive({ useHandCursor: true });
     this.ear.on('pointerdown', () => {
       this.tweens.add({ targets: this.ear, scale: 0.9, duration: 80, yoyo: true });
+      engine.sfx('sfx_mouse_click');
       engine.replayPrompt();
     });
   }

@@ -14,6 +14,7 @@
   ],
   "mechanic": "letter_hunt",
   "params": {
+    "learning": "names",
     "letter_pool": [
       "A",
       "B",
@@ -97,7 +98,14 @@
       "y": 360,
       "w": 150,
       "h": 190,
-      "prompt_audio": "s02_exit_prompt"
+      "prompt_audio": "s02_exit_prompt",
+      "glow_frames": [
+        "spr_trail_pulse_1",
+        "spr_trail_pulse_2",
+        "spr_trail_pulse_3",
+        "spr_trail_pulse_4"
+      ],
+      "glow_scale": 0.7
     }
   },
   "dialog": [

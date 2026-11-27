@@ -23,6 +23,14 @@
   "scene_order": [
     "s01_house",
     "s02_logs",
-    "s03_snakes"
-  ]
+    "s03_snakes",
+    "s04_bunny",
+    "s05_trail_run",
+    "s06_bridge",
+    "s07_bridge_chase"
+  ],
+  "name_colors": {
+    "Reign": "#c9a0ff",
+    "Betsy": "#6cc3ff"
+  }
 }
